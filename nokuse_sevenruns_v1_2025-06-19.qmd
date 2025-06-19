@@ -1,0 +1,342 @@
+---
+title: "nokuse_sevensrun_v1_2025-06-19"
+author: "Mike McManus"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## Nokuse Seven Runs Survey
+
+The purpose of this survey is to answer the question: Is the median turbidity of McKinnon tributary greater than the median turbidity of other tributaries in Sevens Run, and is the turbidity of the of the mainstem below the McKinnon Branch confluence greater than the mainstem turbidity above that confluence?
+
+This survey design will use two surveys, with the first survey collected at base flow conditions, and the other survey at higher discharge conditions after a local rainfall event. Having 2 surveys done will allow a change analysis to used on the survey data. The hypotheses are 1) at base flow there will not be differences among the stratum of tributaries, McKinnon Branch vs other tributaries, nor among mainstem sample sites above or below the McKinnon Branch confluence. However, after rainfall event when there is runoff and overland flow and discharge is higher, then we expect differences between tributary and mainstem strata.
+
+## Library
+
+```{r library}
+
+library(StreamCatTools)
+# vignette("Introduction", "StreamCatTools")
+library(nhdplusTools)
+library(sf)
+library(tidyverse)
+library(mapview)
+library(leaflet)
+library(leafpop)
+library(leafsync) # sync function for mapview maps
+library(leafem) # for addStaticLabels
+# library(RCurl) # getURL function
+library(spsurvey)
+library(spmodel)
+# library(adespatial)
+library(gstat) # variogram cloud
+library(tmap)
+```
+
+## Log
+
+2025-06-19 adding code stratified survey design to draw over sample of sites as likely that some sites on McKinnon branch may be inaccessible or not meet target population criteria
+
+2025-06-09 running code locally with sampling frame specified on 2025-05-24
+
+2025-05-24 coded for different survey sites by specifying mainstem above McKinnon confluence and mainstem below McKinnon confluence
+
+2025-05-09 coded for different survey sites by specifying mainstem above McKinnon confluence and mainstem below McKinnon confluence
+
+2025-05-08 finished assigning attributes to csv file that will become the sample frame
+
+2025-05-04 examined mapview of comids and gnis_name of stream network
+
+## Nokuse shapefile
+
+Obtained from email by Charli Morgan on 2025-05-02. Why do some Nokuse entries have 0 for acres, acreage, or both?
+
+```{r nokuse_boundary}
+
+nkbnd <- st_read("C:/Users/atweg/Documents/Mike/Nokuse/Nokuse_shapefile/NokuseBoundary_4.30.shp")
+
+mapview(nkbnd)
+
+names(nkbnd)
+```
+
+## Identify Catchment
+
+A catchment is the area, or polygon, that contains a stream reach or segment, with a stream reach being the flowline between an upstream confluence and downstream confluence. This interactive EPA map <https://www.epa.gov/national-aquatic-resource-surveys/streamcat-web-tool-map-view> lets one identify a specific catchment. Each catchment, and its corresponding flowline, has a unique comid or featureid. The catchment with comid 2241011, is mostly just east of Hwy 81 bridge and the catchment with comid 2241007 is mostly west of the bridge.
+
+## HUC12
+
+Used <https://www.epa.gov/waterdata/hows-my-waterway> to get HUC12 that contains Sevens Run.
+
+Getting the hydrologic unit code 12 (huc12) that is associated with Sevens Run. The name of the huc12 is Boynton Cutoff and extent covers both west and east of Choctawhatchee River.
+
+```{r get_huc12}
+
+huc12sr <- get_huc(AOI = NULL, id = "031402030903", type = "huc12_nhdplusv2")
+
+plot(huc12sr)
+mapview(huc12sr)
+# mapview(flowline_nldi) + mapview(huc12sr)
+# mapview(flowline_nldi) + mapview(huc12sr) + mapview(nkbnd)
+```
+
+## Flowlines and Upstream Tributraries Trace
+
+Try using huc12sr as area of interest (aoi) polygon to get flowlines and catchments using ndhplusTools following code nhdplus_streamcat.Rmd and chunk nhdplus. This brings in comid for each flowline segment or reach. Also, able to get catchments.
+
+```{r huc12sr_aoi}
+
+sr_nhd1 <- get_nhdplus(AOI = huc12sr, realization = "flowline")
+# flowlines have attributes but extends east and north well past confluence of seven runs with choctawhatachee
+
+mapview(sr_nhd1)
+mapview(sr_nhd1) + mapview(huc12sr)
+names(sr_nhd1)
+
+# do upstream trace on sr_nhd1 flowlines beginning with comid I previously identified. this returns a vector of all the upstream comids of which there are 38
+sr_utcomid_2241011 <- get_UT(sr_nhd1, comid = 2241011, distance = NULL)
+
+
+# filter and keep only the sr_nhd1 comids in the upstream vector of comids
+sr_ut_ehwy81 <- (dplyr::filter(sr_nhd1, comid %in% sr_utcomid_2241011))
+
+mapview(sr_ut_ehwy81, zcol = "gnis_name")
+
+# repeat 3 steps above but now for comid just west of hwy 81 and returns a vector of 36 comids  
+sr_utcomid_2241007 <- get_UT(sr_nhd1, comid = 2241007, distance = NULL)
+
+sr_ut_whwy81 <- (dplyr::filter(sr_nhd1, comid %in% sr_utcomid_2241007))
+
+# these flowlines omit Big Head Branch
+mapview(sr_ut_whwy81, zcol = "gnis_name")
+
+mapview(sr_ut_whwy81, zcol = "gnis_name") + mapview(huc12sr)
+mapview(sr_ut_whwy81, zcol = "gnis_name") + mapview(nkbnd)
+
+
+mapview(sr_nhd1)
+mapview(sr_nhd1) + mapview(huc12sr)
+# mapview(flowline_nldi) + mapview(huc12sr)
+
+# mapview(flowline_nldi) + mapview(sr_nhd1)
+# mapview(sr_nhd1) + mapview(flowline_nldi)
+
+sr_nhd1$gnis_name
+
+# spatial indexing or subsetting acts as a clip
+# indexing larger sf to small sf acts as clip to larger sf
+# sr_nhd1 has flowlines with attributes, which is what we want, but the flowlines have a greater length than what we want so we index it against sr_nhd1
+
+# sr_nhd2 <- sr_nhd1[flowline_nldi$UT_flowlines, ]
+# 
+# mapview(sr_nhd2, color = "red")
+# 
+# mapview(flowline_nldi) + mapview(sr_nhd2, color = "red")
+```
+
+## Catchments within HUC12
+
+Need to check with Marc Weber why not gettingn a 1:1 alignment of catchments with NHDPlus flowlines. Does NHDPlustools pull flowlines in from a different source than StreamCat?
+
+```{r catchments}
+ct_nhd1 <- get_nhdplus(AOI = huc12sr, realization = "catchment")
+
+mapview(ct_nhd1)
+
+mapview(ct_nhd1) + mapview(huc12sr)
+
+mapview(ct_nhd1) + mapview(huc12sr) + mapview(sr_ut_whwy81, zcol = "gnis_name")
+
+dim(sr_nhd1$catchment)
+class(sr_nhd1$catchment)
+names(sr_nhd1$catchment)
+head(sr_nhd1$catchment)
+
+
+```
+
+## Creating Sample Frame Attributes
+
+Examine which reaches have GNIS names and which are blank. Have \~ 52 stream kilometers. For stream names use GNIS names, and where blank assign names. Need to assign 1 of 3 stratification levels to each reach: mainstem (mst) for mainstem of Seven Runs, mckinnon (mck) for McKinnon Branch, and other tributaries (ots). The spatially balanced draw of sample sites will be distributed among those 3 levels of stratification. Had to export csv table of comid and gnis_name so I could assign stream, abbreviation, stream_type, location, and comment. Also specified mainstem above confluence with McKinnon Branch and mainstem below confluence with McKinnon Branch.
+
+```{r sampleframe}
+
+sum(sr_ut_whwy81$lengthkm)
+
+dplyr::select(sr_ut_whwy81, c(comid, gnis_name)) %>% 
+  arrange(gnis_name) %>%
+  print(n = Inf)
+
+
+sr_nogeom <- dplyr::select(sr_ut_whwy81, c(comid, gnis_name)) %>% arrange(gnis_name) %>% st_set_geometry(., NULL) %>% 
+  print(n = Inf)
+
+head(sr_nogeom)
+
+# write.csv(sr_nogeom,file="sr_nogeom.csv",sep=",",row.names=F)
+
+
+mapview(sr_ut_whwy81, zcol = c("gnis_name"), popup = popupTable(sr_ut_whwy81, zcol = c("gnis_name", "comid")))
+
+# trying to identify locations of comids that do not have gnis_name and I could not locate on interactive mapview
+comid_2242181 <- dplyr::filter(sr_ut_whwy81, comid == 2242181)
+comid_2240975 <- dplyr::filter(sr_ut_whwy81, comid == 2240975)
+
+# looks like easternmost trib on northside
+mapview(comid_2240975)
+mapview(sr_ut_whwy81, zcol = c("gnis_name"), popup = popupTable(sr_ut_whwy81, zcol = c("gnis_name", "comid"))) + mapview(comid_2240975, color = "red")
+# reach above the impoundment
+
+# looks like easternmost trib on northside
+mapview(comid_2242181)
+mapview(sr_ut_whwy81, zcol = c("gnis_name"), popup = popupTable(sr_ut_whwy81, zcol = c("gnis_name", "comid"))) + mapview(comid_2242181, color = "green")
+# reach above the impoundment
+
+#confluences of grape head and sugar mill branches on mainstem
+comid_2240991 <- dplyr::filter(sr_ut_whwy81, comid == 2240991)
+mapview(comid_2240991)
+mapview(sr_ut_whwy81, zcol = c("gnis_name"), popup = popupTable(sr_ut_whwy81, zcol = c("gnis_name", "comid"))) + mapview(comid_2240991, color = "purple")
+
+
+```
+
+## Inner Join Modified CSV Attributes to Stream Network Sample Frame
+
+Read in csv file that has been modified to now have stream, abbreviation, stream_type, location, and comment fields.
+
+```{r inner_join}
+
+# make seven runs sample frame
+
+sample_frame <- read.csv(file="sr_nogeom.csv")
+head(sample_frame)
+
+# in doing join the sf object is placed first, then the data frame
+sr_sf <- dplyr::inner_join(sr_ut_whwy81, sample_frame, by = join_by(comid, gnis_name))
+
+names(sr_sf)
+
+mapview(sr_sf)
+
+
+
+sr_sf %>% 
+  group_by(stream) %>% 
+  summarize(sum(lengthkm))
+
+sr_sf %>% 
+  group_by(stream_type) %>% 
+  summarize(sum(lengthkm))
+
+mapview(sr_sf, zcol = "stream_type")
+# mck stands for mckinnon branch, mst_a stands for mainstem of seven runs above mck branch, and mst_b stands for mainstem of sevens runs below mck branch, and otr stands for other tributaries
+
+mapview(sr_sf, zcol = "gnis_name") + mapview(nkbnd)
+
+mapview(sr_sf, zcol = "stream_type") + mapview(nkbnd)
+
+```
+
+## 
+
+Save Survey Sample Frame If no more changes are needed we can save the sample frame as simply load it with the readRDS function so we do not have to keep running the code above.
+
+```{r save_sampleframe}
+# if no more changes are needed we can save the seven runs sample frame
+# save seven runs sample frames as RDS file
+srsf_rds <- saveRDS(sr_sf, file = "srsf.rds")
+
+# can just load the save seven runs sample frame
+sr_sf <- readRDS("srsf.rds")
+
+```
+
+## Draw Spsurvey Sites
+
+Jay Silvanima at FDEP mentioned using crs 3087, not sure how it differs from crs 6439. Up to now stream network has been in geographic cooridnates and now need to be in an equal area projected coordinates.
+
+Draw different types of survey designs.
+
+```{r spsurvey}
+
+# searched epsg Florida albers coordinate reference system
+# checking with FDEP on CRS they use with their stream surveys
+sr_sf <- st_transform(sr_sf, crs = 3087)
+
+set.seed(202505081)
+
+# for illustration only
+# unstratified, equal inclusion probability sampling
+
+eqprob <- grts(sr_sf, n_base = 20)
+
+names(eqprob)
+
+mapview(eqprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
+
+# 2.2 unequal inclusion probabilities
+caty_n <- c(mck = 4, mst_a = 3, mst_b = 3, otr = 10)
+uneqprob <- grts(sr_sf, n_base = 20, caty_var = "stream_type", caty_n = caty_n)
+
+uneqprob
+
+mapview(uneqprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
+
+# Reviewed section 3 Stratified sampling in spsurvey vignette.
+# 3.1 equal inclusion probabilities in each stratum
+strata_n <- c(mck = 4, mst_a = 3, mst_b =3, otr = 10)
+
+strata_eqprob <- grts(sr_sf, n_base = strata_n, stratum_var = "stream_type", n_over = 2)
+strata_eqprob
+mapview(strata_eqprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
+
+mapview(strata_eqprob$sites_base) + mapview(sr_sf, zcol = "stream_type") + mapview(nkbnd)
+
+mapview(strata_eqprob$sites_over) + mapview(sr_sf, zcol = "stream_type")
+
+
+# 3.3 proportional inclusion probailities based on lengthkm
+strata_propprob <- grts(sr_sf, n_base = strata_n, stratum_var = "stream_type", aux_var = "lengthkm")
+strata_propprob
+mapview(strata_propprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
+
+```
+
+########################################################### 
+
+## ignore scratch code below do not run
+
+## Seven Runs Flowlines without Attributes
+
+Code coming from Example 7 of StreamCatTools R package by Marc Weber, with my code at nhdplus_streamcat.Rmd. The Seven Runs flowlines are, I believe, from 1:100K NHDPlus so only the larger tributaries are picked up. Likely, that we would want to use NHD HR (National Hydrography Data High Resolution), but worth checking with what resolution FDEP uses for probabilistic and stream survey work.
+
+```{r nhd100k}
+
+# got comid from interactive map
+# https://www.epa.gov/national-aquatic-resource-surveys/streamcat-web-tool-map-view
+# start_comid = 2241009
+# nldi_feature <- list(featureSource = "comid", featureID = start_comid)
+# 
+# flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
+# 
+# mapview(flowline_nldi, legend = FALSE)
+# 
+# names(flowline_nldi)
+# head(flowline_nldi)
+
+```
+
+Note flowline_nldi does not have any attribute data, such a GNIS names and stream kilometers). Check on nhdplusTools vignettes on how to get attribute data associated with flowlines.
+
+Hold off on getting high resolution, 1:24K, spatial data.
+
+```{r download_hndplus_hires}
+
+# download_nhdplushr(tempdir(), "031402030903", download_files = FALSE)
+
+# return, b/c download_files = FALSE, url and see that 14th url corresponds to 4-digit HUC 0314 (HUC4) that contains HUC12
+
+# see if using that url I can get NHDPlusHR for that HUC12
+```

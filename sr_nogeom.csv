@@ -1,0 +1,37 @@
+comid,gnis_name,stream,abbreviation,stream_type,location,comment
+2241935, ,north_unnamed_trib3,n_un_trib3,otr,crosses_hwy_81,impoundment
+2242183, ,north_unnamed_trib3,n_un_trib3,otr,crosses_hwy_81,impoundment
+2242181, ,north_unnamed_trib3,n_un_trib3,otr,above_impoundment_east_of_hwy81,impoundment
+2241905, ,mill_branch_unnamed_trib,mi_br_un_trib,otr,uppertip_crosses_hwy_81,no_comment
+2240993, ,north_unnamed_trib2,n_un_trib2,otr,parallels_south_tram_road,no_comment
+2240967, ,sugar_mill_branch_unnamed_trib,sm_br_un_trib,otr,flows_from_ne_to_sw,no_comment
+2243303, ,north_unnamed_trib1,n_un_trib1,otr,crosses_mckinnon_bridge_road,no_comment
+2243311, ,south_unnamed_trib1,s_un_trib1,otr,tip_crosses_dirt_road,no_comment
+2243309, ,south_unnamed_trib1,s_un_trib1,otr,middle_reach_piece,no_comment
+2240975, ,north_unnamed_trib3,n_un_trib3,otr,above_impoundment_east_of_hwy81,impoundment
+2241919, ,south_unnamed_trib2,s_un_trib2,otr,confluences_near_mckinnon_branch,no_comment
+2241917, ,south_unnamed_trib1,s_un_trib1,otr,confluences_with_seven_runs,no_comment
+2241013,Carter Branch,carter_branch,ca_br,otr,easternmost_south_trib,no_comment
+2241937,Grape Head Branch,grape_head_branch,gh_br,otr,uppertip_encompassed_by_three_roads,no_comment
+2241921,McKinnon Branch,mckinnon_branch,mck_br,mck,adjacent_to_sand_plant_road,mining_symbols_on_openstreetmap
+2241913,Mill Branch,mill_branch,mi_br,otr,tip_near_hwy81_rockhill_road,ponds_visible_world_imagery
+2241931,Mill Branch,mill_branch,mi_br,otr,tip_near_hwy81_rockhill_road,ponds_visible_world_imagery
+2247979,Palmetto Branch,palmetto_branch,pa_br,otr,upper_reach,no_comment
+2241909,Palmetto Branch,palmetto_branch,pa_br,otr,confluences_with_seven_runs,no_comment
+2240977,Palmetto Branch,palmetto_branch,pa_br,otr,middle_reach_piece,no_comment
+2241007,Seven Runs,seven_runs_mainstem,sr_mst,mst_b,just_below_eleventh_confluence,no_comment
+2240991,Seven Runs,seven_runs_mainstem,sr_mst,mst_b,confluence_gh_br_sm_br,no_comment
+2240999,Seven Runs,seven_runs_mainstem,sr_mst,mst_b,just_below_tenth_confluence_mi_br,no_comment
+2241933,Seven Runs,seven_runs_mainstem,sr_mst,mst_b,just_below_ninth_confluence_ca_br,road_crossing_nearby_on_mi_br
+2240995,Seven Runs,seven_runs_mainstem,sr_mst,mst_b,just_below_eighth_confluence,no_comment
+2241929,Seven Runs,seven_runs_mainstem,sr_mst,mst_b,just_below_sixth_and_seventh_confluences_sm_br,road_crossing
+2241927,Seven Runs,seven_runs_mainstem,sr_mst,mst_b,just_below_fifth_confluence_mck_br,no_comment
+2240989,Seven Runs,seven_runs_mainstem,sr_mst,mst_a,just_bleow_fourth_confluence_above_mck_br_confluence,no_comment
+2240987,Seven Runs,seven_runs_mainstem,sr_mst,mst_a,just_below_third_confluence,no_comment
+2240983,Seven Runs,seven_runs_mainstem,sr_mst,mst_a,just_below_second_confluence_pa_br,no_comment
+2243307,Seven Runs,seven_runs_mainstem,sr_mst,mst_a,just_below_first_confluence,road_crossing
+2241915,Seven Runs,seven_runs_mainstem,sr_mst,mst_a,just_above_second_confluence_pa_br,no_comment
+2243301,Seven Runs,seven_runs_mainstem,sr_mst,mst_a,headwaters_sevens_run,two_road_crossings
+2243305,Seven Runs,seven_runs_mainstem,sr_mst,mst_a,headwaters_sevens_run_above_first_confluence,no_comment
+2240969,Sugar Mill Branch,sugar_mill_branch,sm_br,otr,above_confluence_with_unnamed_trib,sand_plant_road_to_west
+2241925,Sugar Mill Branch,sugar_mill_branch,sm_br,otr,below_confluence_with_unnamed_trib,sand_plant_road_to_west
