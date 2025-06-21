@@ -141,18 +141,18 @@ sr_nhd1$gnis_name
 Need to check with Marc Weber why not gettingn a 1:1 alignment of catchments with NHDPlus flowlines. Does NHDPlustools pull flowlines in from a different source than StreamCat?
 
 ```{r catchments}
-ct_nhd1 <- get_nhdplus(AOI = huc12sr, realization = "catchment")
-
-mapview(ct_nhd1)
-
-mapview(ct_nhd1) + mapview(huc12sr)
-
-mapview(ct_nhd1) + mapview(huc12sr) + mapview(sr_ut_whwy81, zcol = "gnis_name")
-
-dim(sr_nhd1$catchment)
-class(sr_nhd1$catchment)
-names(sr_nhd1$catchment)
-head(sr_nhd1$catchment)
+# ct_nhd1 <- get_nhdplus(AOI = huc12sr, realization = "catchment")
+# 
+# mapview(ct_nhd1)
+# 
+# mapview(ct_nhd1) + mapview(huc12sr)
+# 
+# mapview(ct_nhd1) + mapview(huc12sr) + mapview(sr_ut_whwy81, zcol = "gnis_name")
+# 
+# dim(sr_nhd1$catchment)
+# class(sr_nhd1$catchment)
+# names(sr_nhd1$catchment)
+# head(sr_nhd1$catchment)
 
 
 ```
@@ -239,7 +239,7 @@ mapview(sr_sf, zcol = "stream_type") + mapview(nkbnd)
 
 ```
 
-## 
+## Save Survey Sample Frame
 
 Save Survey Sample Frame If no more changes are needed we can save the sample frame as simply load it with the readRDS function so we do not have to keep running the code above.
 
@@ -252,6 +252,27 @@ srsf_rds <- saveRDS(sr_sf, file = "srsf.rds")
 sr_sf <- readRDS("srsf.rds")
 
 ```
+
+
+## Compare our Sample Frame to FDEP Sample Frame
+
+Jay Silvanima provided this link <https://geodata.dep.state.fl.us/datasets/FDEP::wms-flowing-waters-resource/about> to shapefile of FDEP's Flowing Waters Resource, which contains the sample frame for rivers, streams and canals. We want to see how our sample frame for Seven Runs compares to FDEP's sample frame. Two sample frames show good overlap.
+
+```{r fdep_sampleframe}
+
+fdep_fw1 <- st_read("C:/Users/atweg/Documents/Mike/Nokuse/FDEP/WMS_Flowing_Waters_Resource/WMS_Flowing_Waters_Resource.shp")
+
+names(fdep_fw1)
+head(fdep_fw1)
+
+z1 <- dplyr::filter(fdep_fw1, REPORTING_ == "Zone 1")
+
+mapview(z1, zcol = "GNIS_NAME")
+
+# Shows good overlap
+mapview(z1) + mapview(sr_sf, color = "red")
+```
+
 
 ## Draw Spsurvey Sites
 
