@@ -1,6 +1,6 @@
 ---
 title: "nokuse_sevensrun_v1_2025-06-19"
-author: "Mike McManus"
+author: "Mike McManus and Charli Morgan, Nokuse Land Conservancy"
 format: html
 editor: visual
 editor_options: 
@@ -253,7 +253,6 @@ sr_sf <- readRDS("srsf.rds")
 
 ```
 
-
 ## Compare our Sample Frame to FDEP Sample Frame
 
 Jay Silvanima provided this link <https://geodata.dep.state.fl.us/datasets/FDEP::wms-flowing-waters-resource/about> to shapefile of FDEP's Flowing Waters Resource, which contains the sample frame for rivers, streams and canals. We want to see how our sample frame for Seven Runs compares to FDEP's sample frame. Two sample frames show good overlap.
@@ -272,7 +271,6 @@ mapview(z1, zcol = "GNIS_NAME")
 # Shows good overlap
 mapview(z1) + mapview(sr_sf, color = "red")
 ```
-
 
 ## Draw Spsurvey Sites
 
