@@ -107,13 +107,15 @@ mapview(sd_1, zcol = "value", cex = "value", alpha.regions = .8, legend = TRUE, 
 ```
 
 ## Small Stream Spatial Layer
+Use same coding and object names as used in fdep_sampleframe code chunk in nokuse_sevenruns_v1_2025-06-19.qmd
 ```{r fdep_small_streams}
 
-ss_shp <- st_read("FDEP/WMS_Flowing_Waters_Resource/WMS_Flowing_Waters_Resource.shp")
+fdep_fw1 <- st_read("FDEP/WMS_Flowing_Waters_Resource/WMS_Flowing_Waters_Resource.shp")
 
-names(ss_shp)
-head(ss_shp)
+names(fdep_fw1)
+head(fdep_fw1)
 
-mapview(ss_shp)
+z1 <- dplyr::filter(fdep_fw1, REPORTING_ == "Zone 1")
+
+mapview(z1)
 ```
-
