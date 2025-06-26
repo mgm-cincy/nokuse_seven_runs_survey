@@ -55,7 +55,7 @@ Obtained from email by Charli Morgan on 2025-05-02. Why do some Nokuse entries h
 
 ```{r nokuse_boundary}
 
-nkbnd <- st_read("C:/Users/atweg/Documents/Mike/Nokuse/Nokuse_shapefile/NokuseBoundary_4.30.shp")
+nkbnd <- st_read("Nokuse/NokuseBoundary2025.shp")
 
 mapview(nkbnd)
 
@@ -309,11 +309,19 @@ strata_n <- c(mck = 4, mst_a = 3, mst_b =3, otr = 10)
 
 strata_eqprob <- grts(sr_sf, n_base = strata_n, stratum_var = "stream_type", n_over = 2)
 strata_eqprob
+
+names(strata_eqprob)
+strata_eqprob$sites_over
+
 mapview(strata_eqprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
 
 mapview(strata_eqprob$sites_base) + mapview(sr_sf, zcol = "stream_type") + mapview(nkbnd)
 
 mapview(strata_eqprob$sites_over) + mapview(sr_sf, zcol = "stream_type")
+
+mapview(strata_eqprob$sites_base) + mapview(strata_eqprob$sites_over, color = "red") + mapview(sr_sf, zcol = "stream_type")
+
+
 
 
 # 3.3 proportional inclusion probailities based on lengthkm

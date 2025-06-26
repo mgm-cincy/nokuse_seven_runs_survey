@@ -15,7 +15,7 @@ editor_options:
 
 ```{r libraries}
 library(tidyverse)
-library(janitor)
+library(janitor) # clean data
 library(sf)
 library(mapview)
 library(leaflet)
