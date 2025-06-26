@@ -1,0 +1,106 @@
+---
+title: "fdep_small_streams"
+author: "Mike McManus"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## Log
+
+2025-06-25 Jay Silvanima at FDEP emailed me Zone1_Staus_FDEP2.txt, which has Florida Albers coordinates for stations. Those columns are GIS_ALBX and GIS_ALBY.
+
+
+## Libraries
+
+```{r libraries}
+library(tidyverse)
+library(janitor)
+library(sf)
+library(mapview)
+library(leaflet)
+library(leafpop) # for popups in mapview
+```
+
+## Read in Data
+
+This website <https://learn.r-journalism.com/en/importing_exporting/delimited_text/delimited-text/> gave example with pipe-delimited text file. What are the coordinates for LONGITUDE and LATITUDE? Are they Florida state plane or UTMs?
+
+```{r fdep_status_data}
+ss_1 <- read_delim(file = "C:/Users/atweg/Documents/Mike/Nokuse/FDEP/Zone1_Status_FD2.txt", delim = "|" )
+
+names(ss_1)
+distinct(ss_1, WATER_RESOURCE)
+distinct(ss_1, PARAMETER)
+distinct(ss_1, HYDROLOGIC_UNIT_CODE) # n = 18
+distinct(ss_1, TMDL_BASIN) # n = 7, TMDL_BASIN > HYDROLOGIC_UNIT_CODE
+distinct(ss_1, PLANNING_UNIT) %>% print(n = Inf) # n = 25
+
+
+```
+
+## Create Simple Features Spatial Data
+
+Site showing switched coordinates <https://stackoverflow.com/questions/61443551/why-sfst-transform-returns-empty-geometries-when-applied-on-a-df-with-sf-colum>.
+
+```{r sf_data}
+# my preference to have lowercase column names
+ss_2 <- clean_names(ss_1) %>% 
+  mutate(.,
+               long = gis_albx,
+               lat = gis_alby)
+names(ss_2)
+head(ss_2$long)
+head(ss_2$lat)
+class(ss_2$long)
+
+
+#96. Create sf object from csv file with coordinates
+
+#N.B. crs = 3087 is Florida Albers projections
+ss_3 <- st_as_sf(ss_2, coords = c( "long", "lat"), crs =3087) 
+
+class(ss_3)
+head(ss_3$geometry)
+
+mapview(ss_3)
+
+
+```
+
+## EDA and Mapview Parameters
+
+```{r eda_maps}
+
+turb_1 <- filter(ss_3, parameter == "Turbidity, Lab")
+
+ggplot(turb_1, aes( y = planning_unit, x = value)) + geom_boxplot() + ggtitle("Turbidity")
+
+#98.  Mapview with bubble and legend pop-up
+mapview(turb_1, zcol = "value", cex = "value", alpha.regions = .8, legend = TRUE, popup = popupTable(turb_1, zcol = c("value", "station_name", "waterbody_name", "planning_unit")))
+
+sc_1 <- filter(ss_3, parameter == "Specific Conductance, Field")
+
+ggplot(sc_1, aes( y = planning_unit, x = value)) + geom_boxplot() + ggtitle("Specific Conductivity")
+
+ggplot(sc_1, aes( y = planning_unit, x = log(value))) + geom_boxplot() + ggtitle("Specific Conductivity")
+
+mapview(sc_1, zcol = "value", cex = "value", alpha.regions = .8, legend = TRUE, popup = popupTable(sc_1, zcol = c("value", "station_name", "waterbody_name", "planning_unit")))
+
+ph_1 <- filter(ss_3, parameter == "pH, Field")
+
+ggplot(ph_1, aes( y = planning_unit, x = value)) + geom_boxplot() + ggtitle("pH")
+
+mapview(ph_1, zcol = "value", cex = "value", alpha.regions = .8, legend = TRUE, popup = popupTable(ph_1, zcol = c("value", "station_name", "waterbody_name", "planning_unit")))
+
+
+sd_1 <- filter(ss_3, parameter == "Transparency (Secchi Depth)")
+
+# filtering b/c value = 19.70 m likely typo as sample_depth is 0.05
+ggplot(sd_1 |> filter(value < 19), aes( y = planning_unit, x = value)) + geom_boxplot() + ggtitle("Secchi Depth")
+
+mapview(sd_1, zcol = "value", cex = "value", alpha.regions = .8, legend = TRUE, popup = popupTable(sd_1, zcol = c("value", "station_name", "waterbody_name", "planning_unit")))
+
+
+```

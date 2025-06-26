@@ -1,0 +1,749 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+    <idinfo>
+        <citation>
+            <citeinfo>
+                <origin/>
+                <pubdate>20210108</pubdate>
+                <title>WMS Flowing Waters Resource</title>
+                <edition>2024</edition>
+                <geoform>vector digital data</geoform>
+                <lworkcit>
+                    <citeinfo>
+                        <origin/>
+                        <title>WMS Flowing Waters Resource</title>
+                    </citeinfo>
+                </lworkcit>
+            </citeinfo>
+        </citation>
+        <descript>
+            <abstract>This dataset is a polyline feature class representing the Watershed Monitoring Program's Flowing Waters (Rivers, Streams, and Canals) resource coverages across the state of Florida. Refer to https://floridadep.gov/dear/watershed-monitoring-section/content/status-monitoring-network for more information on the Status Monitoring Network.</abstract>
+            <purpose>The purpose of this layer is to represent the flowing waters coverage at the end of the year and reflect removal of excluded features and additions of features during that year.  The resulting coverage therefore represents the base layer from which selections for the Status Network rivers, streams, and canals will be made in the following year.</purpose>
+        </descript>
+        <timeperd>
+            <timeinfo>
+                <rngdates>
+                    <begdate>20210101</begdate>
+                    <enddate>20211231</enddate>
+                </rngdates>
+            </timeinfo>
+            <current>ground condition</current>
+        </timeperd>
+        <status>
+            <progress>Planned</progress>
+            <update>Annually</update>
+        </status>
+        <spdom>
+            <bounding>
+                <westbc>-87.639663</westbc>
+                <eastbc>-79.893536</eastbc>
+                <northbc>31.042849</northbc>
+                <southbc>25.116081</southbc>
+            </bounding>
+        </spdom>
+        <keywords>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>streams</themekey>
+                <themekey>primary canal</themekey>
+                <themekey>GNIS name</themekey>
+                <themekey>rivers</themekey>
+                <themekey>reachcode</themekey>
+                <themekey>canals</themekey>
+            </theme>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>Primary Canals</themekey>
+                <themekey>Streams</themekey>
+                <themekey>Small Streams</themekey>
+                <themekey>Canals</themekey>
+                <themekey>Large Rivers</themekey>
+                <themekey>Water Resources (Inland)</themekey>
+                <themekey>Rivers</themekey>
+            </theme>
+            <theme>
+                <themekt>WMS Flowing Waters Resource</themekt>
+                <themekey>biota</themekey>
+                <themekey>geoscientificInformation</themekey>
+                <themekey>imageryBaseMapsEarthCover</themekey>
+                <themekey>inlandWaters</themekey>
+                <themekey>environment</themekey>
+            </theme>
+            <theme>
+                <themekt>ISO 19115 Topic Categories</themekt>
+                <themekey>geoscientificInformation</themekey>
+                <themekey>imageryBaseMapsEarthCover</themekey>
+                <themekey>environment</themekey>
+                <themekey>biota</themekey>
+                <themekey>inlandWaters</themekey>
+            </theme>
+            <place>
+                <placekt>None</placekt>
+                <placekey>Florida</placekey>
+                <placekey>county</placekey>
+            </place>
+            <temporal>
+                <tempkt>None</tempkt>
+                <tempkey>2023</tempkey>
+            </temporal>
+        </keywords>
+        <accconst>None</accconst>
+        <useconst>Please refer to the Status monitoring network's design information at https://floridadep.gov/dear/watershed-monitoring-section/content/status-monitoring-network for appropriate usage of these data.</useconst>
+        <ptcontac>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>Florida Department of Environmental Protection (DEP), Watershed Monitoring Section</cntorg>
+                    <cntper>Jay Silvanima</cntper>
+                </cntorgp>
+                <cntpos>Environmental Administrator</cntpos>
+                <cntaddr>
+                    <addrtype>mailing and physical</addrtype>
+                    <address>2600 Blair Stone Rd</address>
+                    <city>Tallahassee</city>
+                    <state>FL</state>
+                    <postal>32399-2400</postal>
+                    <country>US</country>
+                </cntaddr>
+                <cntvoice>850-245-8507</cntvoice>
+                <cntemail>James.Silvanima@dep.state.fl.us</cntemail>
+                <hours>8 AM-5 PM M-F</hours>
+            </cntinfo>
+        </ptcontac>
+        <ptcontac>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>Florida Department of Environmental Protection (FDEP) DEAR</cntorg>
+                    <cntper>Thomas Balkcom</cntper>
+                </cntorgp>
+                <cntpos>Environmental Specialist III</cntpos>
+                <cntaddr>
+                    <addrtype>mailing and physical</addrtype>
+                    <address>2600 Blair Stone Rd MS 3566</address>
+                    <city>Tallahassee</city>
+                    <state>FL</state>
+                    <postal>32399-2400</postal>
+                </cntaddr>
+                <cntvoice>850-245-8050</cntvoice>
+                <cntemail>Thomas.Balkcom@FloridaDEP.gov</cntemail>
+            </cntinfo>
+        </ptcontac>
+        <datacred>Florida Department of Environmental Protection (DEP), Division of Environmental Assessment and Restoration, Watershed Monitoring Section</datacred>
+        <native> Version 6.2 (Build 9200) ; Esri ArcGIS 10.6.1.9270</native>
+    </idinfo>
+    <dataqual>
+        <logic>Features with the geodatabase feature class "Flowing Waters" are reviewed to remove very small dangles or zero length lines to avoid problems in representation at various scales.</logic>
+        <complete>The features within the geodatabase feature class are reviewed for omissions.</complete>
+        <lineage>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR and updated within the GIS Library.
+</procdesc>
+                <procdate> 20240626</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@floridadep.gov</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from Watershed Monitoring Section and updated the same in SDE/DataMiner. Metadata updated.</procdesc>
+                <procdate>20140228</procdate>
+            </procstep>
+            <procstep>
+                <procdesc>The base coverage for rivers, streams, and canals were locationally compared with the 2014 coverages submitted for the GRTS selection process to ensure only those features that were used as a basis for selection are represented in the updated years coverage. Features that were excluded as wrong resource were removed from the 2014 coverage for rivers, streams, and canals. A template of the current schema for the DEP.WMS_LAKES_RESOURCE was copied from the SDE and then features contained within the "Flowing Waters" feature class within the Listframe geodatabase were filtered for non-excluded river, stream, and canal objects which were then loaded into the template. The feature class was then exported to a shapefile and metadata were added to the shapefile prior to submitting to the GIS Librarian for processing the new coverage to the SDE.</procdesc>
+                <procdate>20141203</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Watershed Monitoring Section/ Florida Department of Environmental Protection</cntorg>
+                            <cntper>Andy Woeber</cntper>
+                        </cntorgp>
+                        <cntpos>Environmental Consultant/ GIS Analyst</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Road</address>
+                            <city>Tallahassee</city>
+                            <state>Florida</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8031</cntvoice>
+                        <cntemail>nathan.woeber@dep.state.fl.us</cntemail>
+                        <hours>7am to 4pm, Monday through Friday</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR and updated the same in the GIS library</procdesc>
+                <procdate>20141204</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS/GIS Section</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd MS 6520</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>The base coverage for rivers, streams, and canals were locationally compared with the 2015 coverages submitted for the GRTS selection process to ensure only those features that were used as a basis for selection are represented in the updated years coverage. Features that were excluded as wrong resource were removed from the 2015 coverage for rivers, streams, and canals. A template of the current schema for the DEP.WMS_FLOWING_WATERS_RESOURCE was copied from the SDE and then features contained within the "Flowing Waters" feature class within the Listframe geodatabase were filtered for non-excluded river, stream, and canal objects which were then loaded into the template. The feature class was then exported to a shapefile and metadata were added to the shapefile prior to submitting to the GIS Librarian for processing the new coverage to the SDE.</procdesc>
+                <procdate>20151123</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Watershed Monitoring Section/ Florida Department of Environmental Protection</cntorg>
+                            <cntper>Andy Woeber</cntper>
+                        </cntorgp>
+                        <cntpos>Environmental Consultant/ GIS Analyst</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Road</address>
+                            <city>Tallahassee</city>
+                            <state>Florida</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8031</cntvoice>
+                        <cntemail>nathan.woeber@dep.state.fl.us</cntemail>
+                        <hours>7am to 4pm, Monday through Friday</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data for the year 2015 obtained from DEAR and updated the same in the GIS library.</procdesc>
+                <procdate>20151125</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS/GIS Section</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd MS 6520</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Reviewed coverages of the flowing waters layer in the geodatabase and compared with coverages submitted for the GRTS site selection process. Utilized the reviewed coverages to incorporate in the updated base layer for the flowing waters for 2016. Completed and updated metadata for the layer.</procdesc>
+                <procdate>20161102</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Watershed Monitoring Section/ Florida Department of Environmental Protection</cntorg>
+                            <cntper>Andy Woeber</cntper>
+                        </cntorgp>
+                        <cntpos>Environmental Consultant/ GIS Analyst</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Road</address>
+                            <city>Tallahassee</city>
+                            <state>Florida</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8031</cntvoice>
+                        <cntemail>nathan.woeber@dep.state.fl.us</cntemail>
+                        <hours>7am to 4pm, Monday through Friday</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR and updated the same in the GIS library</procdesc>
+                <procdate>20161108</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS/GIS Section</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd MS 6520</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Reviewed coverages of the flowing waters layer in the geodatabase and compared with coverages submitted for the GRTS site selection process. Utilized the reviewed coverages to incorporate in the updated base layer for the flowing waters for 2017. Completed and updated metadata for the layer.</procdesc>
+                <procdate>20171018</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>FDEP,WMS</cntorg>
+                            <cntper>Andy Woeber</cntper>
+                        </cntorgp>
+                        <cntpos>GIS Analyst</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Road</address>
+                            <city>Tallahassee</city>
+                            <state>Florida</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8031</cntvoice>
+                        <cntemail>nathan.woeber@dep.state.fl.us</cntemail>
+                        <hours>7am to 4pm, Monday through Friday</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR for the year 2017 and updated the same in the GIS library</procdesc>
+                <procdate>20171024</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS/GIS Section</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd MS 6520</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Reviewed coverages of the flowing waters layer in the geodatabase and compared with coverages submitted for the GRTS site selection process. Utilized the reviewed coverages to incorporate in the updated base layer for the flowing waters for 2018. Completed and updated metadata for the layer.</procdesc>
+                <procdate>20181115</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Watershed Monitoring Section/ Florida Department of Environmental Protection</cntorg>
+                            <cntper>Andy Woeber</cntper>
+                        </cntorgp>
+                        <cntpos>Environmental Consultant/ GIS Analyst</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Road</address>
+                            <city>Tallahassee</city>
+                            <state>Florida</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8031</cntvoice>
+                        <cntemail>nathan.woeber@dep.state.fl.us</cntemail>
+                        <hours>7am to 4pm, Monday through Friday</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR for the year 2018 and updated the same in the GIS library</procdesc>
+                <procdate>20181119</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS/GIS Section</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd MS 6520</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Reviewed coverages of the flowing waters layer in the geodatabase.  Removed very small flow lines or zero length features and updated or recalculated attribute fields as necessary.  Completed and updated metadata for the layer.</procdesc>
+                <procdate>20191204</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Watershed Monitoring Section/ Florida Department of Environmental Protection</cntorg>
+                            <cntper>Andy Woeber</cntper>
+                        </cntorgp>
+                        <cntpos>Environmental Consultant/ GIS Analyst</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Road</address>
+                            <city>Tallahassee</city>
+                            <state>Florida</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8031</cntvoice>
+                        <cntemail>nathan.woeber@dep.state.fl.us</cntemail>
+                        <hours>7am to 4pm, Monday through Friday</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR for the year 2019 and updated the same in the GIS library</procdesc>
+                <procdate>20191205</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS/GIS Section</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>MS 6520</address>
+                            <address>2600 Blair Stone Rd</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Reviewed coverages of the flowing waters layer in the geodatabase.  Removed very small flow lines or zero length features and updated or recalculated attribute fields as necessary.  Completed and updated metadata for the layer.</procdesc>
+                <procdate>20201215</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Watershed Monitoring Section/ Florida Department of Environmental Protection</cntorg>
+                            <cntper>Andy Woeber</cntper>
+                        </cntorgp>
+                        <cntpos>Environmental Consultant/ GIS Analyst</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Road</address>
+                            <city>Tallahassee</city>
+                            <state>Florida</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8031</cntvoice>
+                        <cntemail>nathan.woeber@dep.state.fl.us</cntemail>
+                        <hours>7am to 4pm, Monday through Friday</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR for the year 2020 and updated the same in the GIS library</procdesc>
+                <procdate>20210108</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd MS 6520</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Reviewed coverages of the flowing waters layer in the geodatabase.  Removed wrong resource excluded features and updated or recalculated attribute fields as necessary.  Completed and updated metadata for the layer.</procdesc>
+                <procdate>20211105</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Watershed Monitoring Section/ Florida Department of Environmental Protection</cntorg>
+                            <cntper>Andy Woeber</cntper>
+                        </cntorgp>
+                        <cntpos>Environmental Consultant/ GIS Analyst</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Road</address>
+                            <city>Tallahassee</city>
+                            <state>Florida</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8031</cntvoice>
+                        <cntemail>nathan.woeber@dep.state.fl.us</cntemail>
+                        <hours>7am to 4pm, Monday through Friday</hours>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR for the year 2022 and updated the same in the GIS library</procdesc>
+                <procdate>20211105</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd MS 6520</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR and updated within the GIS Library.
+
+</procdesc>
+                <procdate>20221026</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>MS 6520</address>
+                            <address>2600 Blair Stone Rd</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@floridadep.gov</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR, removing incorrect resources, and making updates to attributes and geometry.</procdesc>
+                <procdate>20230523</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) DEAR</cntorg>
+                            <cntper>Thomas Balkcom</cntper>
+                        </cntorgp>
+                        <cntpos>Environmental Specialist III</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd  MS #3566</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                        </cntaddr>
+                        <cntvoice>850-245-8050</cntvoice>
+                        <cntemail>Thomas.Balkcom@FloridaDEP.gov</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR and updated within the GIS Library.
+</procdesc>
+                <procdate>20230524</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>MS 6520</address>
+                            <address>2600 Blair Stone Rd</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@floridadep.gov</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated with data obtained via field and office review, removed incorrect resources, and made updates to attributes and geometry.</procdesc>
+                <procdate>20240624</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) DEAR</cntorg>
+                            <cntper>Thomas Balkcom</cntper>
+                        </cntorgp>
+                        <cntpos>Environmental Specialist III</cntpos>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd MS 3566</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8050</cntvoice>
+                        <cntemail>Thomas.Balkcom@FloridaDEP.gov</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+        </lineage>
+    </dataqual>
+    <spdoinfo>
+        <direct>Vector</direct>
+        <ptvctinf>
+            <sdtsterm>
+                <sdtstype>String</sdtstype>
+                <ptvctcnt>23958</ptvctcnt>
+            </sdtsterm>
+        </ptvctinf>
+    </spdoinfo>
+    <eainfo>
+        <detailed>
+            <enttyp>
+                <enttypl>WMS_FLOWING_WATERS_RESOURCE</enttypl>
+                <enttypd>A collection of geographic features with the same geometry type such as points, polylines, and polygons.</enttypd>
+                <enttypds>ESRI GIS Data Dictionary</enttypds>
+            </enttyp>
+            <attr>
+                <attrlabl>Length_km</attrlabl>
+                <attrdef>The length of the reach expressed in kilometers.</attrdef>
+                <attrdefs>System calculated value from the Shape length field</attrdefs>
+                <attrdomv>
+                                        
+                    
+                    <udom>Field contains calculated values.</udom>
+                                        
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>REPORTING_UNITS</attrlabl>
+                <attrdef>One of the six geographic zones used for data analysis.</attrdef>
+                <attrdefs>GWIS Database Data Dictionary Version 1.5</attrdefs>
+                <attrdomv>
+                                        
+                    
+                    <udom>A field containing a six digit alphanumeric code. Typical values are ZONE-1, ZONE-2, ZONE-3, ZONE-4, ZONE-5 ZONE-6, NWFWMD-1, NWFWMD-2 NWFWMD-A, NWFWMD-B , NWFWMD-C NWFWMD-D, SFWMD-1 SFWMD-2 SFWMD-6, SFWMD-7 SFWMD-A SFWMD-B, SFWMD-C, SFWMD-D SJRWMD-1, SJRWMD-2, SJRWMD-6 SJRWMD-A, SJRWMD-B, SJRWMD-C SJRWMD-D, SRWMD-1, SRWMD-A, SRWMD-B, SRWMD-C, SRWMD-D SWFWMD-1, SWFWMD-2, SWFWMD-A WFWMD-B, SWFWMD-C, SWFWMD-D</udom>
+                                        
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>OBJECTID</attrlabl>
+                <attrdef>Internal feature number.</attrdef>
+                <attrdefs>ESRI</attrdefs>
+                <attrdomv>
+                                        
+                    
+                    <udom>Sequential unique whole numbers that are automatically generated.</udom>
+                                        
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>RESOURCE_</attrlabl>
+                <attrdef>The resource that the feature represents.</attrdef>
+                <attrdefs>Adapted from the GWIS Database Data Dictionary Version 1.5</attrdefs>
+                <attrdomv>
+                                        
+                    
+                    <udom>A field containing 30 alphanumeric characters. Typical values are: River, Canal, Stream, Small Lake, Large Lake, Confined Aquifer, Unconfined Aquifer, etc.</udom>
+                                        
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Shape</attrlabl>
+                <attrdef>Feature geometry.</attrdef>
+                <attrdefs>ESRI</attrdefs>
+                <attrdomv>
+                                        
+                    
+                    <udom>Coordinates defining the features.</udom>
+                                        
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>GNIS_NAME</attrlabl>
+                <attrdef>The name provided to the feature according to the rules established by the United States Board on Geographic Names. The "name" database is maintained by the Geographic Names Information System (GNIS).</attrdef>
+                <attrdefs>National Hydrography Dataset</attrdefs>
+                <attrdomv>
+                                        
+                    
+                    <udom>A field containing 65 alphanumeric characters.</udom>
+                                        
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>STREAMCODE</attrlabl>
+                <attrdef>A unique identifier string created from the concatenation of the Object ID from the surface water listframe geodatabase and the reach code of the feature from the National Hydrography Dataset (NHD) 1:100000 NHD Flowline coverages.  The reach codes provide a common nomenclature for Federal and State reporting of surface water conditions as required under the Clean Water Act.</attrdef>
+                <attrdefs>Watershed Monitoring Section</attrdefs>
+                <attrdomv>
+                                        
+                    
+                    <udom>A field containing up to 30 alphanumeric characters. Typical values of 14 alphanumeric characters to form unique code.</udom>
+                                        
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>SHAPE.LEN</attrlabl>
+            </attr>
+        </detailed>
+    </eainfo>
+    <distinfo>
+        <distliab>See access and use constraints information.</distliab>
+        <stdorder>
+            <digform>
+                <digtopt>
+                    <onlinopt>
+                        <computer>
+                            <networka>
+                                <networkr>https://publicfiles.dep.state.fl.us/OTIS/GIS/data/WMS_FLOWING_WATERS_RESOURCE.zip</networkr>
+                            </networka>
+                        </computer>
+                    </onlinopt>
+                </digtopt>
+            </digform>
+        </stdorder>
+    </distinfo>
+    <metainfo>
+        <metd>20240626</metd>
+        <metc>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>Florida Department of Environmental Protection (FDEP) OTIS/GIS Section</cntorg>
+                </cntorgp>
+                <cntaddr>
+                    <addrtype>mailing and physical</addrtype>
+                    <address>2600 Blair Stone Rd</address>
+                    <city>Tallahassee</city>
+                    <state>FL</state>
+                    <postal>32399-2400</postal>
+                    <country>US</country>
+                </cntaddr>
+                <cntemail>GIS.Librarian@floridadep.gov</cntemail>
+            </cntinfo>
+        </metc>
+        <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+        <metstdv>FGDC-STD-001-1998</metstdv>
+        <mettc>local time</mettc>
+    </metainfo>
+</metadata>
