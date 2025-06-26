@@ -259,7 +259,7 @@ Jay Silvanima provided this link <https://geodata.dep.state.fl.us/datasets/FDEP:
 
 ```{r fdep_sampleframe}
 
-fdep_fw1 <- st_read("C:/Users/atweg/Documents/Mike/Nokuse/FDEP/WMS_Flowing_Waters_Resource/WMS_Flowing_Waters_Resource.shp")
+fdep_fw1 <- st_read("FDEP/WMS_Flowing_Waters_Resource/WMS_Flowing_Waters_Resource.shp")
 
 names(fdep_fw1)
 head(fdep_fw1)
