@@ -11,7 +11,6 @@ editor_options:
 
 2025-06-25 Jay Silvanima at FDEP emailed me Zone1_Staus_FDEP2.txt, which has Florida Albers coordinates for stations. Those columns are GIS_ALBX and GIS_ALBY.
 
-
 ## Libraries
 
 ```{r libraries}
@@ -28,7 +27,9 @@ library(leafpop) # for popups in mapview
 This website <https://learn.r-journalism.com/en/importing_exporting/delimited_text/delimited-text/> gave example with pipe-delimited text file. What are the coordinates for LONGITUDE and LATITUDE? Are they Florida state plane or UTMs?
 
 ```{r fdep_status_data}
-ss_1 <- read_delim(file = "C:/Users/atweg/Documents/Mike/Nokuse/FDEP/Zone1_Status_FD2.txt", delim = "|" )
+# ss_1 <- read_delim(file = "C:/Users/atweg/Documents/Mike/Nokuse/FDEP/Zone1_Status_FD2.txt", delim = "|" )
+
+ss_1 <- read_delim(file = "FDEP/Zone1_Status_FD2.txt", delim = "|" )
 
 names(ss_1)
 distinct(ss_1, WATER_RESOURCE)
