@@ -105,3 +105,15 @@ mapview(sd_1, zcol = "value", cex = "value", alpha.regions = .8, legend = TRUE, 
 
 
 ```
+
+## Small Stream Spatial Layer
+```{r fdep_small_streams}
+
+ss_shp <- st_read("FDEP/WMS_Flowing_Waters_Resource/WMS_Flowing_Waters_Resource.shp")
+
+names(ss_shp)
+head(ss_shp)
+
+mapview(ss_shp)
+```
+
