@@ -9,6 +9,8 @@ editor_options:
 
 ## Log
 
+2025-07-07 added summary stats by planning units, aka watersheds
+
 2025-06-25 Jay Silvanima at FDEP emailed me Zone1_Staus_FDEP2.txt, which has Florida Albers coordinates for stations. Those columns are GIS_ALBX and GIS_ALBY.
 
 ## Libraries
@@ -43,6 +45,8 @@ distinct(ss_1, PLANNING_UNIT) %>% print(n = Inf) # n = 25
 
 ## Create Simple Features Spatial Data
 
+Map of 455 distinct station names in zone 1, which is the NWFWMD.
+
 Site showing switched coordinates <https://stackoverflow.com/questions/61443551/why-sfst-transform-returns-empty-geometries-when-applied-on-a-df-with-sf-colum>.
 
 ```{r sf_data}
@@ -67,10 +71,13 @@ head(ss_3$geometry)
 
 mapview(ss_3)
 
-
+distinct( ss_3, station_name) %>% 
+  print(n=Inf)
 ```
 
 ## EDA and Mapview Parameters
+
+Filtering specifi water quality variables, aka parameters, and making boxplots and maps.
 
 ```{r eda_maps}
 
@@ -106,8 +113,12 @@ mapview(sd_1, zcol = "value", cex = "value", alpha.regions = .8, legend = TRUE, 
 
 ```
 
-## Small Stream Spatial Layer
+## Rivers and Streams Spatial Layer
+
+Can see that maximum turbidity is on backwater channel of Choctawhatchee River.
+
 Use same coding and object names as used in fdep_sampleframe code chunk in nokuse_sevenruns_v1_2025-06-19.qmd
+
 ```{r fdep_small_streams}
 
 fdep_fw1 <- st_read("FDEP/WMS_Flowing_Waters_Resource/WMS_Flowing_Waters_Resource.shp")
@@ -118,4 +129,64 @@ head(fdep_fw1)
 z1 <- dplyr::filter(fdep_fw1, REPORTING_ == "Zone 1")
 
 mapview(z1)
+
+mapview(turb_1, zcol = "value", cex = "value", alpha.regions = .8, legend = TRUE, popup = popupTable(turb_1, zcol = c("value", "station_name", "waterbody_name", "planning_unit"))) + mapview(z1)
+
+turb_2 <- filter(turb_1, value < 170)
+
+mapview(turb_2, zcol = "value", cex = "value", alpha.regions = .8, legend = TRUE, popup = popupTable(turb_1, zcol = c("value", "station_name", "waterbody_name", "planning_unit"))) + mapview(z1)
+
+```
+
+## Summary Stats by Planning Units
+
+Small streams in Choctawhatchee River have a median turbidity of 4.3 based on 58 observations sampled from 2002-2024.
+
+```{r summary_stats}
+sum_turb <- turb_1 %>%
+          group_by(planning_unit) %>%
+          summarize(min = fivenum(value)[1],
+                    q1 = fivenum(value)[2],
+                    mean = mean(value),
+                    median = fivenum(value)[3],
+                    q3 = fivenum(value)[4],
+                    max = fivenum(value)[5],
+                    count = dplyr::n())
+
+print(sum_turb, n = 25)
+
+filter(ss_3, planning_unit == "CHOCTAWHATCHEE RIVER") %>% 
+  distinct(., collection_date) %>% 
+  arrange(.) %>% 
+  print(., n = Inf)
+
+sum_sc <- sc_1 %>%
+          group_by(planning_unit) %>%
+          summarize(min = fivenum(value)[1],
+                    q1 = fivenum(value)[2],
+                    mean = mean(value),
+                    median = fivenum(value)[3],
+                    q3 = fivenum(value)[4],
+                    max = fivenum(value)[5],
+                    count = dplyr::n())
+
+sum_ph <- ph_1 %>%
+          group_by(planning_unit) %>%
+          summarize(min = fivenum(value)[1],
+                    q1 = fivenum(value)[2],
+                    mean = mean(value),
+                    median = fivenum(value)[3],
+                    q3 = fivenum(value)[4],
+                    max = fivenum(value)[5],
+                    count = dplyr::n())
+
+sum_sd <- sd_1 %>%
+          group_by(planning_unit) %>%
+          summarize(min = fivenum(value)[1],
+                    q1 = fivenum(value)[2],
+                    mean = mean(value),
+                    median = fivenum(value)[3],
+                    q3 = fivenum(value)[4],
+                    max = fivenum(value)[5],
+                    count = dplyr::n())
 ```
