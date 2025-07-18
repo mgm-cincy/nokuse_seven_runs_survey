@@ -77,7 +77,7 @@ distinct( ss_3, station_name) %>%
 
 ## EDA and Mapview Parameters
 
-Filtering specifi water quality variables, aka parameters, and making boxplots and maps.
+Filtering specific water quality variables, aka parameters, and making boxplots and maps.
 
 ```{r eda_maps}
 
