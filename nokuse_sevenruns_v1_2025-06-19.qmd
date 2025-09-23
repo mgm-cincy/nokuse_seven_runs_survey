@@ -37,6 +37,8 @@ library(tmap)
 
 ## Log
 
+2025-09-17 survey was implemented from September 9-12th, and not all sites met target population criteria so weights will need to be re-adjusted
+
 2025-06-19 adding code stratified survey design to draw over sample of sites as likely that some sites on McKinnon branch may be inaccessible or not meet target population criteria
 
 2025-06-09 running code locally with sampling frame specified on 2025-05-24
@@ -319,12 +321,12 @@ mapview(strata_eqprob$sites_base) + mapview(sr_sf, zcol = "stream_type") + mapvi
 
 mapview(strata_eqprob$sites_over) + mapview(sr_sf, zcol = "stream_type")
 
-mapview(strata_eqprob$sites_base) + mapview(strata_eqprob$sites_over, color = "red") + mapview(sr_sf, zcol = "stream_type")
+mapview(strata_eqprob$sites_base) + mapview(strata_eqprob$sites_over, color = "red") + mapview(sr_sf, zcol = "stream_type") + mapview(nkbnd)
 
 
 
 
-# 3.3 proportional inclusion probailities based on lengthkm
+# 3.3 proportional inclusion probabilities based on lengthkm
 strata_propprob <- grts(sr_sf, n_base = strata_n, stratum_var = "stream_type", aux_var = "lengthkm")
 strata_propprob
 mapview(strata_propprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
