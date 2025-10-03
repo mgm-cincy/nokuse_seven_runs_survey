@@ -37,6 +37,8 @@ library(tmap)
 
 ## Log
 
+2025-10-03 trying to adjust weights given new vignettes in spsurvery v 5.6.0
+
 2025-09-17 survey was implemented from September 9-12th, and not all sites met target population criteria so weights will need to be re-adjusted
 
 2025-06-19 adding code stratified survey design to draw over sample of sites as likely that some sites on McKinnon branch may be inaccessible or not meet target population criteria
@@ -278,6 +280,8 @@ mapview(z1) + mapview(sr_sf, color = "red")
 
 Jay Silvanima at FDEP mentioned using crs 3087, not sure how it differs from crs 6439. Up to now stream network has been in geographic cooridnates and now need to be in an equal area projected coordinates.
 
+How do I get the summarized lengths of those stream types on a projected sf object?
+
 Draw different types of survey designs.
 
 ```{r spsurvey}
@@ -285,6 +289,15 @@ Draw different types of survey designs.
 # searched epsg Florida albers coordinate reference system
 # checking with FDEP on CRS they use with their stream surveys
 sr_sf <- st_transform(sr_sf, crs = 3087)
+
+sr_sf %>% 
+  group_by(stream_type) %>% 
+  summarize(sum(lengthkm))
+
+sr_sf %>% 
+  group_by(stream_type) %>% 
+  summarize(st_length((sum(geometry))))
+
 
 set.seed(202505081)
 
@@ -332,6 +345,32 @@ strata_propprob
 mapview(strata_propprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
 
 ```
+
+
+## Combine Base & Overdraw Sites
+From <https://usepa.github.io/spsurvey/articles/weighting.html> use sp_rbind to bind 
+rows of base and overdraw samples as all sites need to be evaluated in a survey.
+```{r base_overdraw}
+
+sites_strat <- sp_rbind(strata_eqprob)
+
+names(sites_strat)
+
+sites_stratv2 <- dplyr::select(sites_strat, c(siteID:lengthkm, stream:geometry))
+
+mapview(sites_stratv2) %>%
+  addStaticLabels(label = sites_stratv2$abbreviation,
+                  noHide = TRUE,
+                  direction = 'top',
+                  textOnly = TRUE,
+                  textsize = "20px")
+
+dplyr::select(sites_stratv2, c(siteID:ip)) %>% 
+  print(n=Inf)
+
+```
+
+
 
 ########################################################### 
 
