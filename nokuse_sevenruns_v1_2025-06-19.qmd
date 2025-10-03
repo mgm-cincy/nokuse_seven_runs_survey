@@ -284,6 +284,8 @@ How do I get the summarized lengths of those stream types on a projected sf obje
 
 Draw different types of survey designs.
 
+Marc Weber provided the two ways to summarize the sf object srs_sf for length,
+which requires setting the units.
 ```{r spsurvey}
 
 # searched epsg Florida albers coordinate reference system
@@ -294,9 +296,15 @@ sr_sf %>%
   group_by(stream_type) %>% 
   summarize(sum(lengthkm))
 
+sr_sf$length_km <- units::set_units(st_length(sr_sf),km)
+
 sr_sf %>% 
   group_by(stream_type) %>% 
-  summarize(st_length((sum(geometry))))
+  summarize(sum(length_km))
+
+sr_sf %>%
+  group_by(stream_type) %>%
+  summarize(total_length = sum(units::set_units(st_length(geometry),km)))
 
 
 set.seed(202505081)
@@ -346,10 +354,10 @@ mapview(strata_propprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
 
 ```
 
-
 ## Combine Base & Overdraw Sites
-From <https://usepa.github.io/spsurvey/articles/weighting.html> use sp_rbind to bind 
-rows of base and overdraw samples as all sites need to be evaluated in a survey.
+
+From <https://usepa.github.io/spsurvey/articles/weighting.html> use sp_rbind to bind rows of base and overdraw samples as all sites need to be evaluated in a survey.
+
 ```{r base_overdraw}
 
 sites_strat <- sp_rbind(strata_eqprob)
@@ -369,8 +377,6 @@ dplyr::select(sites_stratv2, c(siteID:ip)) %>%
   print(n=Inf)
 
 ```
-
-
 
 ########################################################### 
 
