@@ -284,8 +284,8 @@ How do I get the summarized lengths of those stream types on a projected sf obje
 
 Draw different types of survey designs.
 
-Marc Weber provided the two ways to summarize the sf object srs_sf for length,
-which requires setting the units.
+Marc Weber provided the two ways to summarize the sf object srs_sf for length, which requires setting the units.
+
 ```{r spsurvey}
 
 # searched epsg Florida albers coordinate reference system
