@@ -4,11 +4,28 @@ format: html
 editor: visual
 ---
 
-## Nokuse Seven Runs Survey Adjust Weights
+## Adjusting Weights of Nokuse Seven Runs Survey
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+The purpose of this script is adjust the weights of the Nokuse Seven Runs stream survey that was conducted from September 8-12, 2025. The vignette "Weight Adjustments in Practice" at <https://usepa.github.io/spsurvey/> describes hows to adjust weights for a stratified, equal probability survey, which is the design we used.
 
-## Running Code
+We had a stratum of stream type with four levels: 1)Mkc, McKinnon Branch, 2) Mst_a, Mainstem upstream of the Mckinnon Branch confluence, 3) Mst_b. Mainstem downstream of the McKinnon Branch confluence, and 4) Otr, other tributaries.
+
+| Stream Type | Stream Length (km) | Base n | Overdraw n |
+|:------------|------------------:|
+| Mck         | 3.33             :| 4      :| 2         :|
+| Mst_a       | 8.53             :| 3      :| 2         :|
+| Mst_b       | 7.21             :| 3      :| 2         :|
+| Otr         | 32.6             :| 10     :| 2         :|
+
+No overdraw sites were used for either mst_a or mst_b so those weights can stay as they were designed.
+
+Mckinnon Branch:  had four base sites and two overdraw sites. The uppermost base site was evaluated in the field by Matt Aresco and I on Thursday, August 28, 2025, and we excluded it because it was logistically inaccessible as it took too long to reach. On Monday, September 8, looking at the aerial photograph, Matt and I reviewed the first Mckinnon overdraw site, which was due west of the sand mine. We decided that it too was logistically inaccessible and excluded it. The second McKinnon Branch overdraw site was reviewed and was deemed a suitable replacement. The four samples collected on McKinnon Branch included the second and third-most upstream sites, which were two base sites called mck_br_a and mck_br_b; the second Mckinnon branch overdraw site, called mck_br_c; the most downstream base site on Mckinnon Branch, called mck_br_d.
+As we were able to keep the designed sample size, n = 4, for Mckinnon Branch no change in weights is needed.
+
+The otr weights were based on a samples size of n = 10. However, even with 2 overdraw otr sites, only 6 otr sites were sampleable:  1 on Palmetto Branch, 3 on Sugar Mill Branch, 1 on Mill Branch, and 1 on Southern Unnamed Tributary 2. Weights need to be adjusted for otr. Because sampleable otr sites now had  an n = 6, we need to adjust the weight.
+
+
+## Combine Base and Overdraw Sites
 
 When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
 
