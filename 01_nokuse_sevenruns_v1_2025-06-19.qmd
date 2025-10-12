@@ -250,10 +250,10 @@ Save Survey Sample Frame If no more changes are needed we can save the sample fr
 ```{r save_sampleframe}
 # if no more changes are needed we can save the seven runs sample frame
 # save seven runs sample frames as RDS file
-srsf_rds <- saveRDS(sr_sf, file = "srsf.rds")
+srsf_rds <- saveRDS(sr_sf, file = "outputs_from_code/srsf.rds")
 
 # can just load the save seven runs sample frame
-sr_sf <- readRDS("srsf.rds")
+sr_sf <- readRDS("outputs_from_code/srsf.rds")
 
 ```
 
@@ -280,9 +280,7 @@ mapview(z1) + mapview(sr_sf, color = "red")
 
 Jay Silvanima at FDEP mentioned using crs 3087, not sure how it differs from crs 6439. Up to now stream network has been in geographic cooridnates and now need to be in an equal area projected coordinates.
 
-How do I get the summarized lengths of those stream types on a projected sf object?
-
-Draw different types of survey designs.
+Draw different types of survey designs and evaluate which we want to use. The stratified equal probability survey design was chosen.
 
 Marc Weber provided the two ways to summarize the sf object srs_sf for length, which requires setting the units.
 
@@ -345,8 +343,6 @@ mapview(strata_eqprob$sites_over) + mapview(sr_sf, zcol = "stream_type")
 mapview(strata_eqprob$sites_base) + mapview(strata_eqprob$sites_over, color = "red") + mapview(sr_sf, zcol = "stream_type") + mapview(nkbnd)
 
 
-
-
 # 3.3 proportional inclusion probabilities based on lengthkm
 strata_propprob <- grts(sr_sf, n_base = strata_n, stratum_var = "stream_type", aux_var = "lengthkm")
 strata_propprob
@@ -358,6 +354,7 @@ mapview(strata_propprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
 
 From <https://usepa.github.io/spsurvey/articles/weighting.html> use sp_rbind to bind rows of base and overdraw samples as all sites need to be evaluated in a survey.
 
+Note that zooming into Mapview with OpenTopoMap as base map, we should have suspected that downstream n_untrib_3 not in target population as symbology suggests it might be a pond. A download of NDHPlus v2 waterbodies might confirm if USGS had also indicated that site was a pond.
 ```{r base_overdraw}
 
 sites_strat <- sp_rbind(strata_eqprob)
@@ -373,8 +370,18 @@ mapview(sites_stratv2) %>%
                   textOnly = TRUE,
                   textsize = "20px")
 
-dplyr::select(sites_stratv2, c(siteID:ip)) %>% 
+```
+
+Remove columns and save sample frame of base and overdraw sites.
+```{r remove_columns}
+
+sites_stratv3 <- dplyr::select(sites_stratv2, c(siteID:ip)) %>% 
   print(n=Inf)
+
+saveRDS(sites_stratv3, file = "outputs_from_code/sites_stratv3.rds")
+
+# can just load the save seven runs sample frame
+# sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
 
 ```
 
