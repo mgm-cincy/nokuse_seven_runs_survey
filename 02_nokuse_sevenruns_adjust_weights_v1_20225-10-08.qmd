@@ -8,29 +8,49 @@ editor: visual
 
 The purpose of this script is adjust the weights of the Nokuse Seven Runs stream survey that was conducted from September 8-12, 2025. The vignette "Weight Adjustments in Practice" at <https://usepa.github.io/spsurvey/> describes hows to adjust weights for a stratified, equal probability survey, which is the design we used.
 
-We had a stratum of stream type with four levels: 1)Mkc, McKinnon Branch, 2) Mst_a, Mainstem upstream of the Mckinnon Branch confluence, 3) Mst_b. Mainstem downstream of the McKinnon Branch confluence, and 4) Otr, other tributaries.
+We had a stratum of stream type with four levels: 1)mkc, McKinnon Branch, 2) mst_a, Mainstem above upstream of the Mckinnon Branch confluence, 3) mst_b. Mainstem below the McKinnon Branch confluence, and 4) Otr, other tributaries.
 
 | Stream Type | Stream Length (km) | Base n | Overdraw n |
-|:------------|------------------:|
-| Mck         | 3.33             :| 4      :| 2         :|
-| Mst_a       | 8.53             :| 3      :| 2         :|
-| Mst_b       | 7.21             :| 3      :| 2         :|
-| Otr         | 32.6             :| 10     :| 2         :|
+|:------------|-------------------:|-------:|-----------:|
+| mck         |               3.33 |      4 |          2 |
+| mst_a       |               8.53 |      3 |          2 |
+| mst_b       |               7.21 |      3 |          2 |
+| otr         |               32.6 |     10 |          2 |
 
-No overdraw sites were used for either mst_a or mst_b so those weights can stay as they were designed.
+Mainstem: all six base sites were used with 3 being upstream of Mckinnon Branch (sr_mst_a, sr_mst_b, and sr_mst_c) and 3 being downstream of Mckinnon Branch (sr_mst_d, sr_mst_e, and sr_mst_f). No overdraw mainstem sites were used.
 
-Mckinnon Branch:  had four base sites and two overdraw sites. The uppermost base site was evaluated in the field by Matt Aresco and I on Thursday, August 28, 2025, and we excluded it because it was logistically inaccessible as it took too long to reach. On Monday, September 8, looking at the aerial photograph, Matt and I reviewed the first Mckinnon overdraw site, which was due west of the sand mine. We decided that it too was logistically inaccessible and excluded it. The second McKinnon Branch overdraw site was reviewed and was deemed a suitable replacement. The four samples collected on McKinnon Branch included the second and third-most upstream sites, which were two base sites called mck_br_a and mck_br_b; the second Mckinnon branch overdraw site, called mck_br_c; the most downstream base site on Mckinnon Branch, called mck_br_d.
-As we were able to keep the designed sample size, n = 4, for Mckinnon Branch no change in weights is needed.
+Mckinnon Branch: had four base sites and two overdraw sites. The uppermost base site was evaluated in the field by Matt Aresco and I on Thursday, August 28, 2025, and we excluded it because it was logistically inaccessible as it took too long to reach. On Monday, September 8, looking at the aerial photograph, Matt and I reviewed the first Mckinnon overdraw site, which was due west of the sand mine. We decided that it too was logistically inaccessible and excluded it. The second McKinnon Branch overdraw site was reviewed and was deemed a suitable replacement. The four samples collected on McKinnon Branch included the second and third-most upstream sites, which were two base sites called mck_br_a and mck_br_b; the second Mckinnon branch overdraw site, called mck_br_c; the most downstream base site on Mckinnon Branch, called mck_br_d. As we were able to keep the designed sample size, n = 4, for Mckinnon Branch no change in weights is needed.
 
-The otr weights were based on a samples size of n = 10. However, even with 2 overdraw otr sites, only 6 otr sites were sampleable:  1 on Palmetto Branch, 3 on Sugar Mill Branch, 1 on Mill Branch, and 1 on Southern Unnamed Tributary 2. Weights need to be adjusted for otr. Because sampleable otr sites now had  an n = 6, we need to adjust the weight.
+The otr weights were based on a samples size of n = 10. However, even with 2 overdraw otr sites, only 6 otr sites were sampleable: 1 on Palmetto Branch, 3 on Sugar Mill Branch, 1 on Mill Branch, and 1 on Southern Unnamed Tributary 2. Weights need to be adjusted for otr. Because sampleable otr sites now had an n = 6, we need to adjust the weight.
 
+OTR: Sugar Mill Branch: all three base sites were used and called from most upstream to most downstream: sm_br_a, sm_br_b, and sm_br_c.
 
-## Combine Base and Overdraw Sites
+OTR: Southern Unnamed Tributary 2: had two base sites that were evaluated, s_un_trib_2a being the uppermost site, and s_un_trib_2b, being the most downstream site (which was close to sr_mst_d). In my orange field notebook, I have the uppermost site, s_un_trib_2a being evaluated as too shallow at \~ 0942. The downstream site s_un_trib_2b was sampleable.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+OTR: Northen Unnamed Tributary 3: had two base sites that were evaluated. This is the easternmost tributary, and it crosses Rt 81. The uppermost base site fell on private property so it was excluded from sampling evaluation. Consequently, the first other tributary (otr) overdraw site was used to replace this base site (see Carter Branch below). The lowermost northern unnamed tributary base site (n_un_trib3a) was visited and deemed a nontarget site as it was a pond. Zooming in on the site with the OpenTopoMap base map appears to show that pond.
+
+OTR: Palmetto Branch: one base site fell on Palmetto Branch, with the field visit indicating the site, pa_br_trib_a, met the target population criteria so it was sampled.
+
+OTR: Mill Branch: one base site and one overdraw site fell on Mill Branch. The uppermost Mill Branch site, which was the base site, fell on private property so it was excluded from sampling evaluation. The lowermost Mill Branch was the overdraw site. The overdraw site, call mi_br_a, met the target population criteria was used to replace the uppermost base site on this tributary.
+
+OTR: Grape Head Branch: had one base site, gr_br_a that fell on this tributary and it was evaluated as nontarget as it was too shallow.
+
+OTR: Carter Branch: had one overdraw site, ca_br_a, that fell on this tributary and it was evaluated as nontarget as it was too shallow.
+
+## Library
+
+```{r library}
+
+library(spsurvey)
+
+```
+
+## Site Evaluation Categories
+
+Load base and overdraw sites
 
 ```{r}
-1 + 1
+sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
 ```
 
 You can add options to executable code like this
