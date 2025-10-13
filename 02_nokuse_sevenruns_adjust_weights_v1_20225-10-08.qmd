@@ -2,6 +2,8 @@
 title: "02_nokuse_sevenruns_adjust_weights"
 format: html
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Adjusting Weights of Nokuse Seven Runs Survey
@@ -47,10 +49,12 @@ library(spsurvey)
 
 ## Site Evaluation Categories
 
-Load base and overdraw sites
+Read modified base and overdraw sites csv file
 
 ```{r}
 sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
+
+write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.csv")
 ```
 
 You can add options to executable code like this
