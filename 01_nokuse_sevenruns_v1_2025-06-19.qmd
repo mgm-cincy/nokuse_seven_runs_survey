@@ -379,7 +379,7 @@ Remove columns and save sample frame of base and overdraw sites. Write as .csv f
 
 sites_stratv3 <- dplyr::select(sites_strat, c(siteID:ip, abbreviation:comment)) %>% print(n=Inf)
 
-write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.cvs")
+write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.csv")
 
 # can just load the save seven runs sample frame
 # sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
