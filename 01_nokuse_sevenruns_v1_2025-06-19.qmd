@@ -373,7 +373,7 @@ mapview(sites_stratv2) %>%
 
 ```
 
-Remove columns and save sample frame of base and overdraw sites. Write as .csv file so I can add entries for evaluation categories and site names.
+Remove columns and save sample frame of base and overdraw sites. Write as .csv file so I can add entries for evaluation categories and site names. Also, save as .rds file so I can bring it back in as an sf object.
 
 ```{r remove_columns}
 
@@ -381,7 +381,9 @@ sites_stratv3 <- dplyr::select(sites_strat, c(siteID:ip, abbreviation:comment)) 
 
 write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.csv")
 
-# can just load the save seven runs sample frame
+saveRDS(sites_stratv3, file = "outputs_from_code/sites_stratv3.rds")
+
+# can just load the saved seven runs base and overdraw sites
 # sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
 
 ```
