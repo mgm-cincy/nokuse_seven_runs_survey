@@ -355,6 +355,7 @@ mapview(strata_propprob$sites_base) + mapview(sr_sf, zcol = "stream_type")
 From <https://usepa.github.io/spsurvey/articles/weighting.html> use sp_rbind to bind rows of base and overdraw samples as all sites need to be evaluated in a survey.
 
 Note that zooming into Mapview with OpenTopoMap as base map, we should have suspected that downstream n_untrib_3 not in target population as symbology suggests it might be a pond. A download of NDHPlus v2 waterbodies might confirm if USGS had also indicated that site was a pond.
+
 ```{r base_overdraw}
 
 sites_strat <- sp_rbind(strata_eqprob)
@@ -372,13 +373,13 @@ mapview(sites_stratv2) %>%
 
 ```
 
-Remove columns and save sample frame of base and overdraw sites.
+Remove columns and save sample frame of base and overdraw sites. Write as .csv file so I can add entries for evaluation categories and site names.
+
 ```{r remove_columns}
 
-sites_stratv3 <- dplyr::select(sites_stratv2, c(siteID:ip)) %>% 
-  print(n=Inf)
+sites_stratv3 <- dplyr::select(sites_strat, c(siteID:ip, abbreviation:comment)) %>% print(n=Inf)
 
-saveRDS(sites_stratv3, file = "outputs_from_code/sites_stratv3.rds")
+write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.cvs")
 
 # can just load the save seven runs sample frame
 # sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
