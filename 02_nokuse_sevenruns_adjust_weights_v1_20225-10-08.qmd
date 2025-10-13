@@ -49,12 +49,27 @@ library(spsurvey)
 
 ## Site Evaluation Categories
 
-Read modified base and overdraw sites csv file
+Read modified base and overdraw sites csv file so that it has field name of sites and evaluation categories.
 
 ```{r}
 sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
+class(sites_stratv3)
+names(sites_stratv3)
 
 write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.csv")
+
+sites_stratv4 <- st_read("outputs_from_code/sites_stratv4.csv")
+class(sites_stratv4)
+names(sites_stratv4)
+
+sites_stratv4 <- dplyr::select(sites_stratv4, c(siteID:comment))
+
+sites_stratv3 <- dplyr::select(sites_stratv3, c(siteID, geometry))
+
+
+sites_stratv5 <- dplyr::left_join(sites_stratv3, sites_stratv4, by = join_by(siteID))
+class(sites_stratv5)
+names(sites_stratv5)
 ```
 
 You can add options to executable code like this
