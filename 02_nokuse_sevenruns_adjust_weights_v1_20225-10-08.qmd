@@ -12,12 +12,12 @@ The purpose of this script is adjust the weights of the Nokuse Seven Runs stream
 
 We had a stratum of stream type with four levels: 1)mkc, McKinnon Branch, 2) mst_a, Mainstem above upstream of the Mckinnon Branch confluence, 3) mst_b. Mainstem below the McKinnon Branch confluence, and 4) Otr, other tributaries.
 
-| Stream Type | Stream Length (km) | Base n | Overdraw n |
+| Stream Type | Stream Length (m) | Base n | Overdraw n |
 |:------------|-------------------:|-------:|-----------:|
-| mck         |               3.33 |      4 |          2 |
-| mst_a       |               8.53 |      3 |          2 |
-| mst_b       |               7.21 |      3 |          2 |
-| otr         |               32.6 |     10 |          2 |
+| mck         |             3,326 |      4 |          2 |
+| mst_a       |             8,526 |      3 |          2 |
+| mst_b       |             7,209 |      3 |          2 |
+| otr         |            32,586 |     10 |          2 |
 
 Mainstem: all six base sites were used with 3 being upstream of Mckinnon Branch (sr_mst_a, sr_mst_b, and sr_mst_c) and 3 being downstream of Mckinnon Branch (sr_mst_d, sr_mst_e, and sr_mst_f). No overdraw mainstem sites were used.
 
@@ -44,8 +44,12 @@ OTR: Carter Branch: had one overdraw site, ca_br_a, that fell on this tributary 
 ```{r library}
 
 library(spsurvey)
-
+library(tidyverse)
 ```
+
+## Log
+
+2025-10-13 modified base and overdraw sites csv file so that it has field name of sites and evaluation categories
 
 ## Site Evaluation Categories
 
@@ -72,11 +76,40 @@ class(sites_stratv5)
 names(sites_stratv5)
 ```
 
-You can add options to executable code like this
+## Adjust Weights
 
-```{r}
-#| echo: false
-2 * 2
+```{r adjwts}
+
+distinct(sites_stratv5, siteuse)
+distinct(sites_stratv5, stratum)
+
+# did left join make chr classes?
+str(sites_stratv5)
+
+# unclear why code not work here but does in script 01
+# dplyr::filter(sites_stratv5, siteuse == "Base") %>%
+#   group_by(., stratum) %>%
+#   summarize(sum(wgt))
+
+#code from vignette
+# sites_strat$adjwgt <- adjwgt(
+#   wgt = sites_strat$wgt,
+#   wgtcat = sites_strat$AREA_CAT,
+#   framesize = c("small" = 135, "large" = 60)
+# )
+
+sites_stratv6 <- filter(sites_stratv5, eval_cat != "not_needed")
+
+sites_stratv6$adjwgt <- adjwgt(
+  wgt = sites_stratv6$wgt,
+  wgtcat = sites_stratv6$stratum,
+  framesize = c("mck" = 3326, "mst_a" = 8526, "mst_b" = 7209, "otr" = 51647)
+)
+  
+)
+
+
+
 ```
 
 The `echo: false` option disables the printing of code (only output is displayed).
