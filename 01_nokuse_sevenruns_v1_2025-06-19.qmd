@@ -377,9 +377,11 @@ mapview(sites_stratv2) %>%
 ```
 
 ## Check Site Weights
+
 Remove columns and save sample frame of base and overdraw sites. Write as .csv file so I can add entries for evaluation categories and site names. Also, save as .rds file so I can bring it back in as an sf object.
 
 Check that base site weights match the length of stream meters for the 4 levels of stratification.
+
 ```{r remove_columns_site_weights}
 
 sites_stratv3 <- dplyr::select(sites_strat, c(siteID:ip, abbreviation:comment)) %>% print(n=Inf)
