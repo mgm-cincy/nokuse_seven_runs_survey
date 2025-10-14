@@ -294,15 +294,16 @@ sr_sf %>%
   group_by(stream_type) %>% 
   summarize(sum(lengthkm))
 
-sr_sf$length_km <- units::set_units(st_length(sr_sf),km)
+# switch to meters for sample frame of stream to compare to meters of probabilisticly drawn sites
+sr_sf$length_m <- units::set_units(st_length(sr_sf),m)
 
 sr_sf %>% 
   group_by(stream_type) %>% 
-  summarize(sum(length_km))
+  summarize(sum(length_m))
 
 sr_sf %>%
   group_by(stream_type) %>%
-  summarize(total_length = sum(units::set_units(st_length(geometry),km)))
+  summarize(total_length = sum(units::set_units(st_length(geometry),m)))
 
 
 set.seed(202505081)
@@ -330,6 +331,8 @@ strata_n <- c(mck = 4, mst_a = 3, mst_b =3, otr = 10)
 
 strata_eqprob <- grts(sr_sf, n_base = strata_n, stratum_var = "stream_type", n_over = 2)
 strata_eqprob
+
+plot(strata_eqprob, sr_sf, key.width = lcm(3))
 
 names(strata_eqprob)
 strata_eqprob$sites_over
@@ -373,9 +376,11 @@ mapview(sites_stratv2) %>%
 
 ```
 
+## Check Site Weights
 Remove columns and save sample frame of base and overdraw sites. Write as .csv file so I can add entries for evaluation categories and site names. Also, save as .rds file so I can bring it back in as an sf object.
 
-```{r remove_columns}
+Check that base site weights match the length of stream meters for the 4 levels of stratification.
+```{r remove_columns_site_weights}
 
 sites_stratv3 <- dplyr::select(sites_strat, c(siteID:ip, abbreviation:comment)) %>% print(n=Inf)
 
@@ -384,7 +389,11 @@ write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.csv")
 saveRDS(sites_stratv3, file = "outputs_from_code/sites_stratv3.rds")
 
 # can just load the saved seven runs base and overdraw sites
-# sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
+sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
+
+dplyr::filter(sites_stratv3, siteuse == "Base") %>% 
+  group_by(., stratum) %>% 
+  summarize(sum(wgt))
 
 ```
 
