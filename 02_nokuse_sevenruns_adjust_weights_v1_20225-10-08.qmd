@@ -13,7 +13,7 @@ The purpose of this script is adjust the weights of the Nokuse Seven Runs stream
 We had a stratum of stream type with four levels: 1)mkc, McKinnon Branch, 2) mst_a, Mainstem above upstream of the Mckinnon Branch confluence, 3) mst_b. Mainstem below the McKinnon Branch confluence, and 4) Otr, other tributaries.
 
 | Stream Type | Stream Length (m) | Base n | Overdraw n |
-|:------------|-------------------:|-------:|-----------:|
+|:------------|------------------:|-------:|-----------:|
 | mck         |             3,326 |      4 |          2 |
 | mst_a       |             8,526 |      3 |          2 |
 | mst_b       |             7,209 |      3 |          2 |
@@ -59,12 +59,14 @@ Read modified base and overdraw sites csv file so that it has field name of site
 sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
 class(sites_stratv3)
 names(sites_stratv3)
+str(sites_stratv3)
 
 write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.csv")
 
-sites_stratv4 <- st_read("outputs_from_code/sites_stratv4.csv")
+sites_stratv4 <- read.csv("outputs_from_code/sites_stratv4.csv")
 class(sites_stratv4)
 names(sites_stratv4)
+str(sites_stratv4)
 
 sites_stratv4 <- dplyr::select(sites_stratv4, c(siteID:comment))
 
@@ -74,6 +76,7 @@ sites_stratv3 <- dplyr::select(sites_stratv3, c(siteID, geometry))
 sites_stratv5 <- dplyr::left_join(sites_stratv3, sites_stratv4, by = join_by(siteID))
 class(sites_stratv5)
 names(sites_stratv5)
+str(sites_stratv5)
 ```
 
 ## Adjust Weights
@@ -86,10 +89,10 @@ distinct(sites_stratv5, stratum)
 # did left join make chr classes?
 str(sites_stratv5)
 
-# unclear why code not work here but does in script 01
-# dplyr::filter(sites_stratv5, siteuse == "Base") %>%
-#   group_by(., stratum) %>%
-#   summarize(sum(wgt))
+
+dplyr::filter(sites_stratv5, siteuse == "Base") %>%
+  group_by(., stratum) %>%
+  summarize(sum(wgt))
 
 #code from vignette
 # sites_strat$adjwgt <- adjwgt(
@@ -105,8 +108,11 @@ sites_stratv6$adjwgt <- adjwgt(
   wgtcat = sites_stratv6$stratum,
   framesize = c("mck" = 3326, "mst_a" = 8526, "mst_b" = 7209, "otr" = 51647)
 )
-  
-)
+# now check adjusted weights 
+ 
+dplyr::filter(sites_stratv6, siteuse == "Base") %>%
+  group_by(., stratum) %>%
+  summarize(sum(adjwgt))
 
 
 
