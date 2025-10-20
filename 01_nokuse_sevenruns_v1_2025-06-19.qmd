@@ -37,6 +37,8 @@ library(tmap)
 
 ## Log
 
+2025-10-20 checking structure of sites_stratv3 as left merge in script 02 not working
+
 2025-10-03 trying to adjust weights given new vignettes in spsurvery v 5.6.0
 
 2025-09-17 survey was implemented from September 9-12th, and not all sites met target population criteria so weights will need to be re-adjusted
