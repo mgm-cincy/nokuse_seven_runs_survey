@@ -39,17 +39,23 @@ OTR: Grape Head Branch: had one base site, gr_br_a that fell on this tributary a
 
 OTR: Carter Branch: had one overdraw site, ca_br_a, that fell on this tributary and it was evaluated as nontarget as it was too shallow.
 
+In hindsight, the overdraw of otr sites should have been n = 5 instead of n = 2. A good rule of thumb is that the overdraw sample size should be at least half of the base sample size.
+
 ## Library
 
 ```{r library}
 
 library(spsurvey)
 library(tidyverse)
+library(readxl)
+
 ```
 
 ## Log
 
-2025-10-13 modified base and overdraw sites csv file so that it has field name of sites and evaluation categories
+2025-10-21 adjusted weights b/c of nonresponses and brought in survey water quality data
+
+2025-10-13 modified base and overdraw sites csv file so that column entries of  field name of sites and evaluation categories could be added in Excel as sites_stratv4. The field name entries will be used to merge with the survey water quality data.
 
 ## Site Evaluation Categories
 
@@ -81,9 +87,9 @@ str(sites_stratv5)
 
 ## Adjust Weights
 
-Need to adjust weights because had 1) to use overdraw sites, 2) some sites that were inaccessible, and 3) some sites that were not part of the target population.
+Need to adjust weights because had 1) to use overdraw sites, 2) some sites that were inaccessible, 3) some sites that were not part of the target population, and some sites were not needed. In other words, the sample size of the implemented survey differed from the designed survey.
 
-Get warnings on category estimates that simple random sample estimator is used when n is less than 4.
+Get warnings on category estimates that simple random sample estimator is used when n< 4.
 
 ```{r adjwts}
 
@@ -91,9 +97,7 @@ distinct(sites_stratv5, siteuse)
 distinct(sites_stratv5, stratum)
 distinct(sites_stratv5, eval_cat)
 
-
 str(sites_stratv5)
-
 
 dplyr::filter(sites_stratv5, siteuse == "Base") %>%
   group_by(., stratum) %>%
@@ -151,7 +155,7 @@ est_site_categories
 #   TRClass = "Sampleable"
 # )
 
-# Next we adjust for nonresponse, again using adjwgtNR():
+# Next we adjust now for nonresponse, using adjwgtNR():
 sites_stratv6$adjwgt_nr <- adjwgtNR(
   sites_stratv6$adjwgt,
   MARClass = sites_stratv6$stratum,
@@ -164,18 +168,39 @@ sites_stratv6$adjwgt_nr <- adjwgtNR(
 print(sites_stratv6[, c("siteID", "siteuse", "stratum", "eval_cat",
                       "adjwgt", "adjwgt_nr")], n = 24)
 
-
+# check again that the adjuste nonresponse weights sum to the sample frame
 dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
   group_by(., stratum) %>%
   summarize(sum(adjwgt_nr))
 
-
+# The nonresponse adjusted weights sum to the appropriate population totals.
 ```
 
 ## Compare Surveyed vs Designed Locations
 
 ```{r actual_vs_designed_locations}
+# obs decreases to n = 16
+sites_stratv7 <- dplyr::filter(sites_stratv6, eval_cat == "sampleable")
 
+# field data
+dt_1 <- read_excel("survey_wqdata/SR_Data.xlsx")
+str(dt_1)
+
+# See Long and Lat in decimal degrees
+
+coords <- data.frame(longitude  = dt_1$Longitude, latitude = dt_1$Latitude)
+head(coords)
+
+# Coordinate Reference Systems (CRS) for Florida Albers
+dt_sf1 <- st_as_sf(dt_1, coords = c("Longitude", "Latitude"), crs =4269) %>% st_transform(3087)
+class(dt_sf1)
+
+# on September 23, 2025 believe some of time entries imported incorrectly
+
+head(dt_sf1$Site)
+head(sites_stratv7$field_name)
+
+mapview(dt_sf1)
 
 
 ```
