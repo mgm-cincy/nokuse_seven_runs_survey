@@ -212,7 +212,7 @@ mapview(dt_sf1) + mapview(sites_stratv7, color = "yellow") + mapview(sr_sf, colo
 dt_2 <- left_join(sites_stratv7, dt_1, join_by(field_name == Site))
 class(dt_2)
 names(dt_2)
-head(dt_2, n=16)
+head(dt_2)
 ```
 
 ##WQ Estimates
@@ -230,11 +230,18 @@ head(dt_2, n=16)
 strat_cont_ests <- cont_analysis(
   dt_2,
   siteID = "siteID",
-  vars = 'pH (SU)',
+  vars = "pH",
   weight = "adjwgt_nr",
   stratumID = "stratum"
 )
 
+strat_cont_ests$Mean
 
+warnprnt()
+
+names(strat_cont_ests)
+strat_cont_ests$CDF
+strat_cont_ests$Pct
+strat_cont_ests$Mean
 
 ```
