@@ -399,6 +399,15 @@ dplyr::filter(sites_stratv3, siteuse == "Base") %>%
   group_by(., stratum) %>% 
   summarize(sum(wgt))
 
+mapview(sites_stratv3)
+
+mapview(sites_stratv3) %>%
+  addStaticLabels(label = sites_stratv3$abbreviation,
+                  noHide = TRUE,
+                  direction = 'top',
+                  textOnly = TRUE,
+                  textsize = "20px")
+
 ```
 
 ########################################################### 
