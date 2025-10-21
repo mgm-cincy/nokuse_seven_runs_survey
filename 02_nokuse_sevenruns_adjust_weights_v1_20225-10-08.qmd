@@ -212,10 +212,11 @@ mapview(dt_sf1) + mapview(sites_stratv7, color = "yellow") + mapview(sr_sf, colo
 dt_2 <- left_join(sites_stratv7, dt_1, join_by(field_name == Site))
 class(dt_2)
 names(dt_2)
-
+head(dt_2, n=16)
 ```
 
 ##WQ Estimates
+
 ```{r wq_est}
 # from analysis vignette
 # strat_cont_ests <- cont_analysis(
@@ -229,7 +230,7 @@ names(dt_2)
 strat_cont_ests <- cont_analysis(
   dt_2,
   siteID = "siteID",
-  vars = pH (SU),
+  vars = 'pH (SU)',
   weight = "adjwgt_nr",
   stratumID = "stratum"
 )
@@ -237,4 +238,3 @@ strat_cont_ests <- cont_analysis(
 
 
 ```
-
