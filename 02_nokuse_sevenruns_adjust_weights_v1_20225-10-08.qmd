@@ -177,6 +177,7 @@ dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
 ```
 
 ## Compare Surveyed vs Designed Locations
+
 Did Charli record GPS coodinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design.
 
 ```{r actual_vs_designed_locations}
@@ -207,4 +208,33 @@ mapview(dt_sf1) + mapview(sr_sf, color = "blue")
 
 # did Charli record GPS coordinates in the field
 mapview(dt_sf1) + mapview(sites_stratv7, color = "yellow") + mapview(sr_sf, color = "blue")
+
+dt_2 <- left_join(sites_stratv7, dt_1, join_by(field_name == Site))
+class(dt_2)
+names(dt_2)
+
 ```
+
+##WQ Estimates
+```{r wq_est}
+# from analysis vignette
+# strat_cont_ests <- cont_analysis(
+#   NLA_PNW,
+#   siteID = "SITE_ID",
+#   vars = "BMMI",
+#   weight = "WEIGHT",
+#   stratumID = "URBAN"
+# )
+
+strat_cont_ests <- cont_analysis(
+  dt_2,
+  siteID = "siteID",
+  vars = pH (SU),
+  weight = "adjwgt_nr",
+  stratumID = "stratum"
+)
+
+
+
+```
+
