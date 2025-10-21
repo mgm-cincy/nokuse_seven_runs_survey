@@ -182,7 +182,7 @@ dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
 # obs decreases to n = 16
 sites_stratv7 <- dplyr::filter(sites_stratv6, eval_cat == "sampleable")
 
-# field data
+# field data has mainly chr data so try editing in Excel
 dt_1 <- read_excel("survey_wqdata/SR_Data.xlsx")
 str(dt_1)
 
@@ -202,5 +202,8 @@ head(sites_stratv7$field_name)
 
 mapview(dt_sf1)
 
+mapview(dt_sf1) + mapview(sr_sf, color = "blue")
 
+# did Charli record GPS coordinates in the field
+mapview(dt_sf1) + mapview(sites_stratv7, color = "yellow") + mapview(sr_sf, color = "blue")
 ```
