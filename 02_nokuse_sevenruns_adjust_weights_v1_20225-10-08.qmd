@@ -10,7 +10,7 @@ editor_options:
 
 The purpose of this script is adjust the weights of the Nokuse Seven Runs stream survey that was conducted from September 8-12, 2025. The vignette "Weight Adjustments in Practice" at <https://usepa.github.io/spsurvey/> describes hows to adjust weights for a stratified, equal probability survey, which is the design we used.
 
-We had a stratum of stream type with four levels: 1)mkc, McKinnon Branch, 2) mst_a, Mainstem above upstream of the Mckinnon Branch confluence, 3) mst_b. Mainstem below the McKinnon Branch confluence, and 4) Otr, other tributaries.
+We had a sample frame (sr_sf) with a stratum of stream type with four levels: 1)mkc, McKinnon Branch, 2) mst_a, Mainstem above upstream of the Mckinnon Branch confluence, 3) mst_b. Mainstem below the McKinnon Branch confluence, and 4) Otr, other tributaries.
 
 | Stream Type | Stream Length (m) | Base n | Overdraw n |
 |:------------|------------------:|-------:|-----------:|
@@ -80,16 +80,18 @@ str(sites_stratv5)
 ```
 
 ## Adjust Weights
+
 Need to adjust weights because had 1) to use overdraw sites, 2) some sites that were inaccessible, and 3) some sites that were not part of the target population.
 
 Get warnings on category estimates that simple random sample estimator is used when n is less than 4.
+
 ```{r adjwts}
 
 distinct(sites_stratv5, siteuse)
 distinct(sites_stratv5, stratum)
 distinct(sites_stratv5, eval_cat)
 
-# did left join make chr classes?
+
 str(sites_stratv5)
 
 
@@ -105,11 +107,12 @@ dplyr::filter(sites_stratv5, siteuse == "Base") %>%
 # )
 
 sites_stratv6 <- filter(sites_stratv5, eval_cat != "not_needed")
+# note that observations drop to 24
 
 sites_stratv6$adjwgt <- adjwgt(
   wgt = sites_stratv6$wgt,
   wgtcat = sites_stratv6$stratum,
-  framesize = c("mck" = 3326, "mst_a" = 8526, "mst_b" = 7209, "otr" = 51647)
+  framesize = c("mck" = 3326, "mst_a" = 8526, "mst_b" = 7209, "otr" = 32586)
 )
 # now check adjusted weights 
 # needed to use both base and overdraw sites with implemented survey
@@ -121,7 +124,7 @@ dplyr::filter(sites_stratv6, siteuse == "Base" | siteuse == "Over") %>%
 group_by(sites_stratv6, stratum) %>%
   summarize(sum(adjwgt))
 
-#adjusted weights so that with n = 16 surveyed sites, as opposed to n = 20 designed sites still get 
+#adjusted weights so that with n = 16 surveyed sites, as opposed to n = 20 designed sites still get sum of weights as designed
 
 # We can use these weights to estimate the proportion of the population that is sampleable or not sampleable due to not being part of the target population, inaccessibility, or a lack of landowner permission. We can do this separately
 # for each strata:
@@ -132,16 +135,47 @@ est_site_categories <- cat_analysis(
   weight = "adjwgt"
 )
 
+# get warning because local neighborhood variance estimator requires an n = 4 and mst_a and mst_b only have n = 3. With n < 4 independent random sample variance estimator is used
 warnprnt()
+est_site_categories
 
-# note estimamte above is using designed coordinates.
+# note estimate above is using designed coordinates.
+
+# missing at random (MAR) code from vignette
+# Next we adjust for nonresponse, again using adjwgtNR():
+# sites_strat$adjwgt_nr <- adjwgtNR(
+#   sites_strat$adjwgt,
+#   MARClass = sites_strat$AREA_CAT,
+#   EvalStatus = sites_strat$EVAL_CAT,
+#   TNRClass = c("Endangered", "Inaccessible", "Lack_Permission"),
+#   TRClass = "Sampleable"
+# )
+
+# Next we adjust for nonresponse, again using adjwgtNR():
+sites_stratv6$adjwgt_nr <- adjwgtNR(
+  sites_stratv6$adjwgt,
+  MARClass = sites_stratv6$stratum,
+  EvalStatus = sites_stratv6$eval_cat,
+  TNRClass = c("not_target", "inaccessible", "lack_permission"),
+  TRClass = "sampleable"
+)
+
+# note that only sampleable sites have adjwgt_nr > 0
+print(sites_stratv6[, c("siteID", "siteuse", "stratum", "eval_cat",
+                      "adjwgt", "adjwgt_nr")], n = 24)
+
+
+dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
+  group_by(., stratum) %>%
+  summarize(sum(adjwgt_nr))
+
 
 ```
 
 ## Compare Surveyed vs Designed Locations
+
 ```{r actual_vs_designed_locations}
 
 
 
 ```
-
