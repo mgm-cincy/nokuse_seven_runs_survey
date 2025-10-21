@@ -55,7 +55,7 @@ library(readxl)
 
 2025-10-21 adjusted weights b/c of nonresponses and brought in survey water quality data
 
-2025-10-13 modified base and overdraw sites csv file so that column entries of  field name of sites and evaluation categories could be added in Excel as sites_stratv4. The field name entries will be used to merge with the survey water quality data.
+2025-10-13 modified base and overdraw sites csv file so that column entries of field name of sites and evaluation categories could be added in Excel as sites_stratv4. The field name entries will be used to merge with the survey water quality data.
 
 ## Site Evaluation Categories
 
@@ -89,7 +89,7 @@ str(sites_stratv5)
 
 Need to adjust weights because had 1) to use overdraw sites, 2) some sites that were inaccessible, 3) some sites that were not part of the target population, and some sites were not needed. In other words, the sample size of the implemented survey differed from the designed survey.
 
-Get warnings on category estimates that simple random sample estimator is used when n< 4.
+Get warnings on category estimates that simple random sample estimator is used when n\< 4.
 
 ```{r adjwts}
 
@@ -177,15 +177,16 @@ dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
 ```
 
 ## Compare Surveyed vs Designed Locations
+Did Charli record GPS coodinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design.
 
 ```{r actual_vs_designed_locations}
 # obs decreases to n = 16
 sites_stratv7 <- dplyr::filter(sites_stratv6, eval_cat == "sampleable")
 
 # field data has mainly chr data so try editing in Excel
-dt_1 <- read_excel("survey_wqdata/SR_Data.xlsx")
+dt_1 <- read_excel("survey_wqdata/SR_Data_editsv1.xlsx", col_types = c("text", "text", "date", "date", "numeric", "numeric", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "text"))
 str(dt_1)
-
+warnings()
 # See Long and Lat in decimal degrees
 
 coords <- data.frame(longitude  = dt_1$Longitude, latitude = dt_1$Latitude)
