@@ -247,7 +247,7 @@ mapview(sr_sf, zcol = "stream_type") + mapview(nkbnd)
 
 ```
 
-## Save Survey Sample Frame
+## Sample Frame and Basin
 
 Save Survey Sample Frame If no more changes are needed we can save the sample frame as simply load it with the readRDS function so we do not have to keep running the code above.
 
@@ -259,6 +259,14 @@ srsf_rds <- saveRDS(sr_sf, file = "outputs_from_code/srsf.rds")
 # can just load the save seven runs sample frame
 sr_sf <- readRDS("outputs_from_code/srsf.rds")
 
+start_comid = 2241007
+nldi_feature <- list(featureSource = "comid", featureID = start_comid)
+
+basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+
+mapview(basin)
+
+mapview(sr_sf) + mapview(basin)
 ```
 
 ## Compare our Sample Frame to FDEP Sample Frame
