@@ -269,6 +269,7 @@ mapview(basin)
 mapview(sr_sf) + mapview(basin)
 
 saveRDS(basin, file = "outputs_from_code/basin.rds")
+basin <- readRDS("outputs_from_code/basin.rds")
 ```
 
 ## Compare our Sample Frame to FDEP Sample Frame
