@@ -48,7 +48,7 @@ In hindsight, the overdraw of otr sites should have been n = 5 instead of n = 2.
 library(spsurvey)
 library(tidyverse)
 library(readxl)
-
+library(tmap)
 ```
 
 ## Log
@@ -247,7 +247,9 @@ strat_cont_ests$Mean
 ```
 
 ## Map and Histogram
-Code came from script 06 of \Mike\R_code\nmc-2025-model-ssn2.
+
+Code came from script 06 of \Mike\R\_code\nmc-2025-model-ssn2.
+
 ```{r}
 
 
@@ -278,5 +280,26 @@ j_map_vsci_obs <- tm_shape(vahusb_poly) + tm_polygons("subbasin", legend.show = 
 tmap_save(j_map_vsci_obs, "figures_nmc_2025/j_map_vsci_obs_v1_20250212.jpeg", width = 7, height = 3.5, dpi = 150)
 
 
-```
+sr_map_hist_wq <- tm_shape(basin) + tm_polygons() + tm_shape(sr_sf) + tm_lines() + tm_shape(dt_2) + 
+  tm_bubbles(
+  size = "pH",
+  legend.size.show = FALSE,
+  col = "pH"),
+  legend.col.is.portrait = FALSE),
+  style = "fixed",
+  palette = "viridis",
+  title.col = "pH at Observed Sites September 2025 (n = 16)",
+  breaks = seq(0, 14, by = 2),
+  sizes.legend=seq(0, 14, by = 2),
+  legend.hist = FALSE,
+) + tm_layout(asp=0,
+  legend.width = 2, legend.text.size = 1.5, legend.title.size = 3.0,
+  frame = FALSE,
+  legend.position = c("center", "TOP"),
+  title.position = c('center', 'TOP')
+) + tm_scale_bar(position = c("center", "BOTTOM", text.size = 1.0)) + tm_compass(position = c("left", "top")) +
+  tm_legend(legend.outside=T, legend.outside.position="top",legend.hist.height = 1.0, legend.hist.width = 1.0, legend.hist.size = 1.5)
 
+tmap_save(j_map_vsci_obs, "figures_nmc_2025/j_map_vsci_obs_v1_20250212.jpeg", width = 7, height = 3.5, dpi = 150)
+
+```
