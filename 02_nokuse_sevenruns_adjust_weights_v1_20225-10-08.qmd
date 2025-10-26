@@ -48,6 +48,7 @@ In hindsight, the overdraw of otr sites should have been n = 5 instead of n = 2.
 library(spsurvey)
 library(tidyverse)
 library(readxl)
+library(mapview)
 library(tmap)
 ```
 
@@ -178,7 +179,7 @@ dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
 
 ## Compare Surveyed vs Designed Locations
 
-Did Charli record GPS coodinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design.
+Did Charli record GPS coordinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design.
 
 ```{r actual_vs_designed_locations}
 # obs decreases to n = 16
@@ -203,6 +204,8 @@ head(dt_sf1$Site)
 head(sites_stratv7$field_name)
 
 mapview(dt_sf1)
+
+sr_sf <- readRDS("outputs_from_code/srsf.RDS")
 
 mapview(dt_sf1) + mapview(sr_sf, color = "blue")
 
@@ -248,13 +251,15 @@ strat_cont_ests$Mean
 
 ## Map and Histogram
 
-Code came from script 06 of \Mike\R\_code\nmc-2025-model-ssn2.
+Code came from script 06 of \Mike\R\_code\nmc-2025-model-ssn2 and updating based on <https://tmap.geocompx.org/charts> to add histogram to map.
 
 ```{r}
 
 
 # Observed sites
 ### doing legend.show = F for polygons as I will be placing sb_legend on Powerpoint
+
+basin <- readRDS("outputs_from_code/basin.rds")
 
 j_map_vsci_obs <- tm_shape(vahusb_poly) + tm_polygons("subbasin", legend.show = F) +
   tm_shape(DFobs3a) + 
@@ -280,12 +285,18 @@ j_map_vsci_obs <- tm_shape(vahusb_poly) + tm_polygons("subbasin", legend.show = 
 tmap_save(j_map_vsci_obs, "figures_nmc_2025/j_map_vsci_obs_v1_20250212.jpeg", width = 7, height = 3.5, dpi = 150)
 
 
-sr_map_hist_wq <- tm_shape(basin) + tm_polygons() + tm_shape(sr_sf) + tm_lines() + tm_shape(dt_2) + 
-  tm_bubbles(
-  size = "pH",
-  legend.size.show = FALSE,
-  col = "pH"),
-  legend.col.is.portrait = FALSE),
+sr_map_hist_wq <- tm_shape(basin) + 
+  tm_polygons() +
+  tm_title("Seven Runs Watershed Stream Survey:  pH") + 
+  tm_compass(position = c("left", "bottom")) +
+  tm_scalebar(position = c("left", "bottom")) +
+  tm_shape(sr_sf) + tm_lines() + 
+  tm_shape(dt_2) + 
+  tm_symbols(fill = "pH", 
+             fill.chart = tm_chart_histogram())
+  
+
+legend.col.is.portrait = FALSE),
   style = "fixed",
   palette = "viridis",
   title.col = "pH at Observed Sites September 2025 (n = 16)",
