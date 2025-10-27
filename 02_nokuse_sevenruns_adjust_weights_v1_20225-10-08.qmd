@@ -62,7 +62,7 @@ library(tmap)
 
 Read modified base and overdraw sites csv file so that it has field name of sites and evaluation categories.
 
-```{r}
+```{r eval_cat}
 sites_stratv3 <- readRDS("outputs_from_code/sites_stratv3.rds")
 class(sites_stratv3)
 names(sites_stratv3)
@@ -253,7 +253,7 @@ strat_cont_ests$Mean
 
 Code came from script 06 of \Mike\R\_code\nmc-2025-model-ssn2 and updating based on <https://tmap.geocompx.org/charts> to add histogram to map.
 
-```{r}
+```{r map_histogram}
 
 
 # Observed sites
@@ -285,16 +285,41 @@ j_map_vsci_obs <- tm_shape(vahusb_poly) + tm_polygons("subbasin", legend.show = 
 tmap_save(j_map_vsci_obs, "figures_nmc_2025/j_map_vsci_obs_v1_20250212.jpeg", width = 7, height = 3.5, dpi = 150)
 
 
-sr_map_hist_wq <- tm_shape(basin) + 
-  tm_polygons() +
-  tm_title("Seven Runs Watershed Stream Survey:  pH") + 
+# tmap_mode("view") is interactive but does not allow for tm_chart_histogram()
+tmap_mode("view")
+sr_map_pH_view <- tm_basemap(c(StreetMap = "OpenStreetMap", TopoMap = "OpenTopoMap")) +
+  tm_shape(basin) + 
+   tm_borders(col = "black", lwd = 0.75, lty = "dashed")+
+  tm_title("Seven Runs Watershed Stream Survey:  Average pH 5.3 (5.1, 5.5), 95% Confidence Limits") + 
   tm_compass(position = c("left", "bottom")) +
   tm_scalebar(position = c("left", "bottom")) +
   tm_shape(sr_sf) + tm_lines() + 
   tm_shape(dt_2) + 
+  tm_symbols(fill = "pH")
+
+sr_map_pH_view
+class(sr_map_pH_view)
+tmap_save(tm = sr_map_pH_view, filename ="tmaps/pH.html")
+
+# plot mode is static and supports charts function  
+tmap_mode("plot")
+sr_map_pH_plot <- tm_shape(basin) + 
+  tm_borders(col = "black", lwd = 0.5, lty = "dashed")+
+  tm_title("Seven Runs Watershed Stream Survey\nAverage pH 5.3 (5.1, 5.5), 95% Confidence Limits") + 
+  tm_compass(position = c("LEFT", "BOTTOM")) +
+  tm_scalebar(position = c("LEFT", "BOTTOM")) +
+  tm_shape(sr_sf) + tm_lines() + 
+  tm_shape(dt_2) + 
   tm_symbols(fill = "pH", 
              fill.chart = tm_chart_histogram())
-  
+
+sr_map_pH_plot
+tmap_save(sr_map_pH_plot, "tmaps/pH_histogram_v1_20251027.jpeg", width = 7, height = 3.5, dpi = 150)
+
+
+tm_shape(slo_borders) +
+  tm_borders(col = "black", lwd = 0.5, lty = "dashed")
+
 
 legend.col.is.portrait = FALSE),
   style = "fixed",
