@@ -54,6 +54,8 @@ library(tmap)
 
 ## Log
 
+2025-10-27 sent maps with average pH estimate to Nokuse staff
+
 2025-10-21 adjusted weights b/c of nonresponses and brought in survey water quality data
 
 2025-10-13 modified base and overdraw sites csv file so that column entries of field name of sites and evaluation categories could be added in Excel as sites_stratv4. The field name entries will be used to merge with the survey water quality data.
@@ -129,9 +131,9 @@ dplyr::filter(sites_stratv6, siteuse == "Base" | siteuse == "Over") %>%
 group_by(sites_stratv6, stratum) %>%
   summarize(sum(adjwgt))
 
-#adjusted weights so that with n = 16 surveyed sites, as opposed to n = 20 designed sites still get sum of weights as designed
+# adjusted weights so that with n = 16 surveyed sites, as opposed to n = 20 designed sites still get sum of weights as designed
 
-# We can use these weights to estimate the proportion of the population that is sampleable or not sampleable due to not being part of the target population, inaccessibility, or a lack of landowner permission. We can do this separately
+# from vignette, we can use these weights to estimate the proportion of the population that is sampleable or not sampleable due to not being part of the target population, inaccessibility, or a lack of landowner permission. We can do this separately
 # for each strata:
 est_site_categories <- cat_analysis(
   sites_stratv6,
@@ -177,7 +179,7 @@ dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
 # The nonresponse adjusted weights sum to the appropriate population totals.
 ```
 
-## Compare Surveyed vs Designed Locations
+## Merge WQ Data and Adjusted Weights
 
 Did Charli record GPS coordinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design.
 
@@ -218,7 +220,7 @@ names(dt_2)
 head(dt_2)
 ```
 
-##WQ Estimates
+## WQ Survey Estimates
 
 ```{r wq_est}
 # from analysis vignette
