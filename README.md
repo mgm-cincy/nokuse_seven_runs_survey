@@ -1,6 +1,8 @@
 # nokuse_seven_runs_survey
 A spatially balanced probabilistic stream survey of Seven Runs, a tributary of the Choctawhatchee River.
-
+The target population is flowing streams in the Seven Runs watershed with discernable stream banks and a stream bed with an identifiable main channel, and a depth of at least 10 cm or ~ 4 inches. That depth is based on FDEP’s sampling protocol, and the GIS layer of the sample frame needs to correspond to the FDEP GIS layer used in their small stream status surveys.
 The purpose of this survey is to answer the question: Is the median turbidity of McKinnon tributary greater than the median turbidity of other tributaries in Sevens Run, and is the turbidity of the of the mainstem below the McKinnon Branch confluence greater than the mainstem turbidity above that confluence?
 
 This survey design will use two surveys, with the first survey collected at base flow conditions, and the other survey at higher discharge conditions after a local rainfall event. Having 2 surveys done will allow a change analysis to used on the survey data. The first hypothesis is that at base flow there will not be differences among the stratum of tributaries, McKinnon Branch vs other tributaries, nor among mainstem sample sites above or below the McKinnon Branch confluence. However, the second hypothesis is that after a rainfall event when there is runoff and overland flow and discharge is higher, then we expect differences between tributary and mainstem strata.
+
+Script 01 builds the stream network sample frame, or GIS layer, compares different spatially balanced probabilistic survey designs, and an equal probability, stratified survey design is chosen. Script 02 adjusts the survey weights based on the implemented survey where inaccessible and nontarget sites were encountered. The water quality data are merged with the adjusted weights so averages with 95% confidence limits can be estimated, and interactive and static maps can be made.
