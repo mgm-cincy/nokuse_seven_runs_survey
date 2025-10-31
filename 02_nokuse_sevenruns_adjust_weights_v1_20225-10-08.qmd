@@ -54,6 +54,8 @@ library(tmap)
 
 ## Log
 
+10/31/2025 made subpopulation pH estimates for mck, mst, and otr
+
 2025-10-27 sent maps with average pH estimate to Nokuse staff
 
 2025-10-21 adjusted weights b/c of nonresponses and brought in survey water quality data
@@ -222,6 +224,7 @@ head(dt_2)
 
 ## WQ Survey Estimates
 
+Get warnings because stratum level mst_a and mst_b only have n = 3 so the independent random sample estimator is used.
 ```{r wq_est}
 # from analysis vignette
 # strat_cont_ests <- cont_analysis(
@@ -291,6 +294,40 @@ sr_map_pH_plot
 tmap_save(sr_map_pH_plot, "tmaps/pH_histogram_v1_20251027.jpeg", width = 7, height = 3.5, dpi = 150)
 
 
+```
+
+## Subpopulation Estimates
+
+Pool stratum level mst_a and mst_b into subpopulation stream of "mst" so that now gives a mainstem sample size of n = 6. The other subpopulations of mck and otr have subpopulation sample sizes of n = 4 and n = 6, respectively. With those sample sizes, the default variance estimator should be used which is the local neighborhood variance estimator. 
+```{r, subpop}
+
+dt_3 <- dt_2 %>% 
+  mutate( 
+    sub_strm = case_when(
+      stream_type == "mst_a" | stream_type == "mst_b" ~ "mst",
+      TRUE ~ stream_type)
+  )
+
+head(dt_3$sub_strm)
+str(dt_3)
+
+sub_strm_ests <- cont_analysis(
+  dt_3,
+  siteID = "siteID",
+  vars = "pH",
+  weight = "adjwgt_nr",
+  subpop = "sub_strm"
+)
+
+names(sub_strm_ests)
+sub_strm_ests$Mean
+sub_strm_ests$CDF
+sub_strm_ests$Pct
+
+
+
+
 
 
 ```
+
