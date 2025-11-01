@@ -224,7 +224,8 @@ head(dt_2)
 
 ## WQ Survey Estimates
 
-Get warnings because stratum level mst_a and mst_b only have n = 3 so the independent random sample estimator is used.
+Get pH average, but get warnings because stratum level mst_a and mst_b only have n = 3 so the independent random sample estimator is used. See if remove stratumID, do I get the same overall mean and se. strat_cont_ests1$Mean has a larger standard error because, I believe according to the warning the independent random sample variance estimator is being used. With strat_cont_ests2, no warning occurs and a smaller standard error is estimated as the local neighborhood variance estimator is used. Do stat_cont_ests3 specifying IRS as vartype, and does that equal stat_cont_ests1? No, stat_cont_ests3 has the largest SE, stat_cont_ests1 is smaller, and stat_cont_ests2 is smallest. Does the warning with stat_cont_ests1 imply that for mst_a and mst_b the vartype is SRS for those stratum levels, but for mck and otr, with their large sample sizes, the vartype is the default LOCAL?
+
 ```{r wq_est}
 # from analysis vignette
 # strat_cont_ests <- cont_analysis(
@@ -235,22 +236,58 @@ Get warnings because stratum level mst_a and mst_b only have n = 3 so the indepe
 #   stratumID = "URBAN"
 # )
 
-strat_cont_ests <- cont_analysis(
+# is this have vartype being a mix of SRS for mst_a and mst_b and LOCAL for mck and otr with no stratification?
+strat_cont_ests1 <- cont_analysis(
   dt_2,
   siteID = "siteID",
   vars = "pH",
   weight = "adjwgt_nr",
-  stratumID = "stratum"
+  stratumID = "stratum",
 )
 
-strat_cont_ests$Mean
+warnprnt()
+strat_cont_ests1$Mean
 
 warnprnt()
 
-names(strat_cont_ests)
-strat_cont_ests$CDF
-strat_cont_ests$Pct
-strat_cont_ests$Mean
+names(strat_cont_ests1)
+strat_cont_ests1$CDF
+strat_cont_ests1$Pct
+strat_cont_ests1$Mean
+
+# dropped stratumID to see if no warnings occur and get same mean se estimates
+# vartype LOCAL with no stratification
+strat_cont_ests2 <- cont_analysis(
+  dt_2,
+  siteID = "siteID",
+  vars = "pH",
+  weight = "adjwgt_nr"
+)
+
+strat_cont_ests2$Mean
+
+# vartype SRS with no stratification
+strat_cont_ests3 <- cont_analysis(
+  dt_2,
+  siteID = "siteID",
+  vars = "pH",
+  weight = "adjwgt_nr",
+  vartype = "SRS"
+)
+
+strat_cont_ests3$Mean
+
+# vartype SRS with stratification
+strat_cont_ests4 <- cont_analysis(
+  dt_2,
+  siteID = "siteID",
+  vars = "pH",
+  weight = "adjwgt_nr",
+  stratumID = "stratum",
+  vartype = "SRS",
+)
+
+strat_cont_ests4$Mean
 
 ```
 
@@ -298,7 +335,8 @@ tmap_save(sr_map_pH_plot, "tmaps/pH_histogram_v1_20251027.jpeg", width = 7, heig
 
 ## Subpopulation Estimates
 
-Pool stratum level mst_a and mst_b into subpopulation stream of "mst" so that now gives a mainstem sample size of n = 6. The other subpopulations of mck and otr have subpopulation sample sizes of n = 4 and n = 6, respectively. With those sample sizes, the default variance estimator should be used which is the local neighborhood variance estimator. 
+Pool stratum level mst_a and mst_b into subpopulation stream of "mst" so that now gives a mainstem sample size of n = 6. The other subpopulations of mck and otr have subpopulation sample sizes of n = 4 and n = 6, respectively. With those sample sizes, the default variance estimator should be used which is the local neighborhood variance estimator.
+
 ```{r, subpop}
 
 dt_3 <- dt_2 %>% 
@@ -324,10 +362,10 @@ sub_strm_ests$Mean
 sub_strm_ests$CDF
 sub_strm_ests$Pct
 
-
-
-
-
-
 ```
 
+| Stream Subpopulation | Average pH| 95% LCb  | 95% UCB    | n |
+|:--------------------:|----------:|---------:|-----------:|--:|
+| mck                  |      6.2  | 6.0      |      6.4   | 4 |
+| mst                  |      5.4  | 5.2      |      5.5   | 6 |
+| otr                  |      5.2  | 4.9      |      5.5   | 6 |
