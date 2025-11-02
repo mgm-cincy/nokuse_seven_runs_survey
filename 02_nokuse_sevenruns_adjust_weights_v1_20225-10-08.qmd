@@ -224,7 +224,7 @@ head(dt_2)
 
 ## WQ Survey Estimates
 
-Get pH average, but get warnings because stratum level mst_a and mst_b only have n = 3 so the independent random sample estimator is used. See if remove stratumID, do I get the same overall mean and se. strat_cont_ests1$Mean has a larger standard error because, I believe according to the warning the independent random sample variance estimator is being used. With strat_cont_ests2, no warning occurs and a smaller standard error is estimated as the local neighborhood variance estimator is used. Do stat_cont_ests3 specifying IRS as vartype, and does that equal stat_cont_ests1? No, stat_cont_ests3 has the largest SE, stat_cont_ests1 is smaller, and stat_cont_ests2 is smallest. Does the warning with stat_cont_ests1 imply that for mst_a and mst_b the vartype is SRS for those stratum levels, but for mck and otr, with their large sample sizes, the vartype is the default LOCAL?
+Get pH average, but get warnings because stratum level mst_a and mst_b only have n = 3 so the independent random sample estimator is used. See if remove stratumID, do I get the same overall mean and se. strat_cont_ests1\$Mean has a larger standard error because, I believe according to the warning the independent random sample variance estimator is being used. With strat_cont_ests2, no warning occurs and a smaller standard error is estimated as the local neighborhood variance estimator is used. Do stat_cont_ests3 specifying IRS as vartype, and does that equal stat_cont_ests1? No, stat_cont_ests3 has the largest SE, stat_cont_ests1 is smaller, and stat_cont_ests2 is smallest. Does the warning with stat_cont_ests1 imply that for mst_a and mst_b the vartype is SRS for those stratum levels, but for mck and otr, with their large sample sizes, the vartype is the default LOCAL?
 
 ```{r wq_est}
 # from analysis vignette
@@ -352,7 +352,7 @@ str(dt_3)
 sub_strm_ests <- cont_analysis(
   dt_3,
   siteID = "siteID",
-  vars = "pH",
+  vars = c("Depth", "Temp", "pH", "DO_mg_l", "Cond", "Turbidity", "Wetted_width", "Bank_width", "Velocity", "Canopy_pct"),
   weight = "adjwgt_nr",
   subpop = "sub_strm"
 )
@@ -364,8 +364,8 @@ sub_strm_ests$Pct
 
 ```
 
-| Stream Subpopulation | Average pH| 95% LCb  | 95% UCB    | n |
-|:--------------------:|----------:|---------:|-----------:|--:|
-| mck                  |      6.2  | 6.0      |      6.4   | 4 |
-| mst                  |      5.4  | 5.2      |      5.5   | 6 |
-| otr                  |      5.2  | 4.9      |      5.5   | 6 |
+| Stream Subpopulation | Average pH | 95% LCb | 95% UCB |   n |
+|:--------------------:|-----------:|--------:|--------:|----:|
+|         mck          |        6.2 |     6.0 |     6.4 |   4 |
+|         mst          |        5.4 |     5.2 |     5.5 |   6 |
+|         otr          |        5.2 |     4.9 |     5.5 |   6 |
