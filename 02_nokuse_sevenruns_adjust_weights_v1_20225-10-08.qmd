@@ -375,6 +375,15 @@ sub_strm_ests$Mean
 sub_strm_ests$CDF
 sub_strm_ests$Pct
 
+# this omit subpopulations to give all site estimates with local neighborhood variance estimator
+# z1sub_strm_ests <- cont_analysis(
+#   dt_3,
+#   siteID = "siteID",
+#   vars = c("pH", "Cond", "Turbidity", "DO_mg_l", "Temp", "Depth", "Velocity", "Wetted_width", "Bank_width",  "Canopy_pct"),
+#   weight = "adjwgt_nr"
+# )
+# 
+# z1sub_strm_ests$Mean
 ```
 
 | Stream Subpopulation | Average pH | 95% LCb | 95% UCB |   n |
