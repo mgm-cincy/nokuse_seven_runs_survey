@@ -306,10 +306,13 @@ The table below compares the standard error of the pH estimate, 5.3, for all 16 
 
 Some code came from script 06 of \Mike\R\_code\nmc-2025-model-ssn2 and updating based on <https://tmap.geocompx.org/charts> to add histogram to map.
 
-```{r map_histogram}
+### pH
+
+```{r pH_map_histogram}
 
 basin <- readRDS("outputs_from_code/basin.rds")
 
+# pH 
 # tmap_mode("view") is interactive but does not allow for tm_chart_histogram()
 tmap_mode("view")
 sr_map_pH_view <- tm_basemap(c(StreetMap = "OpenStreetMap", TopoMap = "OpenTopoMap")) +
@@ -343,6 +346,43 @@ tmap_save(sr_map_pH_plot, "tmaps/pH_histogram_v1_20251027.jpeg", width = 7, heig
 
 
 ```
+
+### Conductivity
+```{r cond_map_histogram}
+# conductivity 
+# tmap_mode("view") is interactive but does not allow for tm_chart_histogram()
+tmap_mode("view")
+sr_map_cond_view <- tm_basemap(c(StreetMap = "OpenStreetMap", TopoMap = "OpenTopoMap")) +
+  tm_shape(basin) + 
+   tm_borders(col = "black", lwd = 0.75, lty = "dashed")+
+  tm_title("Seven Runs Watershed Stream Survey:  Average Conductivity 21.0 (20.3, 21.8), 95% Confidence Limits") + 
+  tm_compass(position = c("left", "bottom")) +
+  tm_scalebar(position = c("left", "bottom")) +
+  tm_shape(sr_sf) + tm_lines() + 
+  tm_shape(dt_2) + 
+  tm_symbols(fill = "Cond")
+
+sr_map_cond_view
+class(sr_map_cond_view)
+tmap_save(tm = sr_map_cond_view, filename ="tmaps/cond.html")
+
+# plot mode is static and supports charts function  
+tmap_mode("plot")
+sr_map_cond_plot <- tm_shape(basin) + 
+  tm_borders(col = "black", lwd = 0.5, lty = "dashed")+
+  tm_title("Seven Runs Watershed Stream Survey\nAverage Conductivity 21.0 (20.3, 21.8),, 95% Confidence Limits") + 
+  tm_compass(position = c("LEFT", "BOTTOM")) +
+  tm_scalebar(position = c("LEFT", "BOTTOM")) +
+  tm_shape(sr_sf) + tm_lines() + 
+  tm_shape(dt_2) + 
+  tm_symbols(fill = "Cond", 
+             fill.chart = tm_chart_histogram())
+
+sr_map_cond_plot
+tmap_save(sr_map_cond_plot, "tmaps/cond_histogram_v1_20251027.jpeg", width = 7, height = 3.5, dpi = 150)
+
+```
+
 
 ## Subpopulation Estimates
 
