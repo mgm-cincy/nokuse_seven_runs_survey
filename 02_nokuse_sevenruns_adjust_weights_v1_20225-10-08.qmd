@@ -292,7 +292,6 @@ strat_cont_ests4$Mean
 
 ```
 
-
 The table below compares the standard error of the pH estimate, 5.3, for all 16 sites based on stratification and type of variance estimator.
 
 | Stratification | Variance Estimator | Standard Error |
@@ -348,6 +347,7 @@ tmap_save(sr_map_pH_plot, "tmaps/pH_histogram_v1_20251027.jpeg", width = 7, heig
 ```
 
 ### Conductivity
+
 ```{r cond_map_histogram}
 # conductivity 
 # tmap_mode("view") is interactive but does not allow for tm_chart_histogram()
@@ -382,7 +382,6 @@ sr_map_cond_plot
 tmap_save(sr_map_cond_plot, "tmaps/cond_histogram_v1_20251027.jpeg", width = 7, height = 3.5, dpi = 150)
 
 ```
-
 
 ## Subpopulation Estimates
 
