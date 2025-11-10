@@ -74,7 +74,7 @@ class(sites_stratv3)
 names(sites_stratv3)
 str(sites_stratv3)
 
-write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.csv")
+# write.csv(sites_stratv3, file = "outputs_from_code/sites_stratv3.csv")
 
 sites_stratv4 <- read.csv("outputs_from_code/sites_stratv4.csv")
 class(sites_stratv4)
@@ -94,7 +94,7 @@ str(sites_stratv5)
 
 ## Adjust Weights
 
-Need to adjust weights because had 1) to use overdraw sites, 2) some sites that were inaccessible, 3) some sites that were not part of the target population, and some sites were not needed. In other words, the sample size of the implemented survey differed from the designed survey.
+Need to adjust weights because had 1) to use overdraw sites, 2) some sites that were inaccessible, 3) some sites that were not part of the target population, and 4)some sites were not needed. In other words, the sample size of the implemented survey differed from the designed survey.
 
 Get warnings on category estimates that simple random sample estimator is used when n\< 4.
 
@@ -150,7 +150,7 @@ est_site_categories <- cat_analysis(
 warnprnt()
 est_site_categories
 
-# note estimate above is using designed coordinates.
+# note estimate above is using field coordinates from SR_Data_editsv2 on 2025-11-10
 
 # missing at random (MAR) code from vignette
 # Next we adjust for nonresponse, again using adjwgtNR():
@@ -162,7 +162,7 @@ est_site_categories
 #   TRClass = "Sampleable"
 # )
 
-# Next we adjust now for nonresponse, using adjwgtNR():
+# Next we adjust now for the nonresponse class (TNRClass), using adjwgtNR():
 sites_stratv6$adjwgt_nr <- adjwgtNR(
   sites_stratv6$adjwgt,
   MARClass = sites_stratv6$stratum,
@@ -183,15 +183,16 @@ dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
 # The nonresponse adjusted weights sum to the appropriate population totals.
 ```
 
-## Designed vs Sampled Locations
+## Designed vs Actual Locations
 
-Did Charli record GPS coordinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design in SR_Data_editsv1.xlsx. The spreadsheet SR_Data_editsv2.xlsx has Field_Longitude and Field_Latitude columns as field coordinates were recorded for these 8 sites:
-sr_mst_e, mck_br_a, mck_br_b, mck_br_c, mck_br_d, sm_br_a, sm_br_b, and sm_br_c.
-In !Log Nokuse.docx recorded comparison of designed vs field locations.
+Did Charli record GPS coordinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design in SR_Data_editsv1.xlsx. The spreadsheet SR_Data_editsv2.xlsx has Field_Longitude and Field_Latitude columns as field coordinates were recorded for these 8 sites: sr_mst_e, mck_br_a, mck_br_b, mck_br_c, mck_br_d, sm_br_a, sm_br_b, and sm_br_c. In !Log Nokuse.docx recorded comparison of designed vs field locations.
 
 ```{r actual_vs_designed_locations}
-# obs decreases to n = 16
-sites_stratv7 <- dplyr::filter(sites_stratv6, eval_cat == "sampleable")
+# remove geometry so can join to wq with field coordinates, obs decreases to n = 16
+sites_stratv7 <- st_set_geometry(sites_stratv6, NULL) %>% 
+  dplyr::filter(., eval_cat == "sampleable")
+
+head(sites_stratv7)
 
 # field data has mainly chr data so formatted columns in Excel
 dt_1 <- read_excel("survey_wqdata/SR_Data_editsv2.xlsx",
@@ -204,7 +205,7 @@ coords <- data.frame(longitude  = dt_1$Field_Longitude, latitude = dt_1$Field_La
 head(coords)
 
 # Coordinate Reference Systems (CRS) for Florida Albers
-dt_sf1 <- st_as_sf(zdt_1, coords = c("Field_Longitude", "Field_Latitude"), crs =4269) %>% st_transform(3087)
+dt_sf1 <- st_as_sf(dt_1, coords = c("Field_Longitude", "Field_Latitude"), crs =4269) %>% st_transform(3087)
 class(dt_sf1)
 
 # on September 23, 2025 believe some of time entries imported incorrectly
@@ -218,10 +219,11 @@ sr_sf <- readRDS("outputs_from_code/srsf.RDS")
 
 mapview(dt_sf1) + mapview(sr_sf, color = "blue")
 
-# did Charli record GPS coordinates in the field
-mapview(dt_sf1) + mapview(sites_stratv7, color = "yellow") + mapview(sr_sf, color = "blue")
+# did Charli record GPS coordinates in the field? yes
+# yellow ring shows designed locations
+mapview(dt_sf1) + mapview(sites_stratv6, color = "yellow") + mapview(sr_sf, color = "blue")
 
-dt_2 <- left_join(sites_stratv7, dt_1, join_by(field_name == Site))
+dt_2 <- left_join(dt_sf1, sites_stratv7, join_by(Site == field_name))
 class(dt_2)
 names(dt_2)
 head(dt_2)
@@ -250,6 +252,7 @@ strat_cont_ests1 <- cont_analysis(
   vartype = "SRS"
 )
 
+errorprnt()
 strat_cont_ests1$Mean
 
 # stratification and vartype SRS
