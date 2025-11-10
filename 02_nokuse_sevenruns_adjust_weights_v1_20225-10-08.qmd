@@ -54,7 +54,9 @@ library(tmap)
 
 ## Log
 
-10/31/2025 made subpopulation pH estimates for mck, mst, and otr
+2025-11-10 Compare designed coordinates with field coordinates for sites
+
+2025-10-31 made subpopulation pH estimates for mck, mst, and otr
 
 2025-10-27 sent maps with average pH estimate to Nokuse staff
 
@@ -181,25 +183,28 @@ dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
 # The nonresponse adjusted weights sum to the appropriate population totals.
 ```
 
-## Merge WQ Data and Adjusted Weights
+## Designed vs Sampled Locations
 
-Did Charli record GPS coordinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design.
+Did Charli record GPS coordinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design in SR_Data_editsv1.xlsx. The spreadsheet SR_Data_editsv2.xlsx has Field_Longitude and Field_Latitude columns as field coordinates were recorded for these 8 sites:
+sr_mst_e, mck_br_a, mck_br_b, mck_br_c, mck_br_d, sm_br_a, sm_br_b, and sm_br_c.
+In !Log Nokuse.docx recorded comparison of designed vs field locations.
 
 ```{r actual_vs_designed_locations}
 # obs decreases to n = 16
 sites_stratv7 <- dplyr::filter(sites_stratv6, eval_cat == "sampleable")
 
-# field data has mainly chr data so try editing in Excel
-dt_1 <- read_excel("survey_wqdata/SR_Data_editsv1.xlsx", col_types = c("text", "text", "date", "date", "numeric", "numeric", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "text"))
+# field data has mainly chr data so formatted columns in Excel
+dt_1 <- read_excel("survey_wqdata/SR_Data_editsv2.xlsx",
+                    col_types = c("text", "text", "date", "date", "numeric", "numeric", "numeric", "numeric","text","numeric", "numeric", "numeric", "numeric", "numeric", "numeric","numeric", "numeric", "text", "numeric", "numeric", "numeric","numeric", "text", "text", "text", "text", "text", "text", "text","text"))
 str(dt_1)
 warnings()
 # See Long and Lat in decimal degrees
-
-coords <- data.frame(longitude  = dt_1$Longitude, latitude = dt_1$Latitude)
+# note use of Field_Longitude and Field_Latitude columns that came in with 2025-11-03 spreadsheet from Charli Morgan at Nokuse
+coords <- data.frame(longitude  = dt_1$Field_Longitude, latitude = dt_1$Field_Latitude)
 head(coords)
 
 # Coordinate Reference Systems (CRS) for Florida Albers
-dt_sf1 <- st_as_sf(dt_1, coords = c("Longitude", "Latitude"), crs =4269) %>% st_transform(3087)
+dt_sf1 <- st_as_sf(zdt_1, coords = c("Field_Longitude", "Field_Latitude"), crs =4269) %>% st_transform(3087)
 class(dt_sf1)
 
 # on September 23, 2025 believe some of time entries imported incorrectly
