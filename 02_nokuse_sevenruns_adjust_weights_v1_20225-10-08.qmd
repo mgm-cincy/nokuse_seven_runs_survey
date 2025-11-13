@@ -188,6 +188,7 @@ dplyr::filter(sites_stratv6, eval_cat == "sampleable") %>%
 Did Charli record GPS coordinates in the field? Coordinates in spreadsheet overlay exactly coordinates from survey design in SR_Data_editsv1.xlsx. The spreadsheet SR_Data_editsv2.xlsx has Field_Longitude and Field_Latitude columns as field coordinates were recorded for these 8 sites: sr_mst_e, mck_br_a, mck_br_b, mck_br_c, mck_br_d, sm_br_a, sm_br_b, and sm_br_c. In !Log Nokuse.docx recorded comparison of designed vs field locations.
 
 In Excel had to edit SR_Data_editsv2.xlsx Site names so matched field names sites_stratv7.
+
 ```{r actual_vs_designed_locations}
 # remove geometry so can join to wq with field coordinates, obs decreases to n = 16
 sites_stratv7 <- st_set_geometry(sites_stratv6, NULL) %>% 
@@ -237,7 +238,7 @@ dim(dt_2)
 
 ## WQ Survey Estimates
 
-Stepping through estimates by comparing 1) no stratification and vartype SRS, 2, stratification and vartype SRS, 3) no stratification and varype LOCAL, which is the default, and 4) stratification and vartype LOCAL. The fourth estimates gives a warning about SRS variance estimator being used for mst_a and mst_b because their sample sizes are less than 4. Does this imply though that the local variance estimator was used for mck and otr, with their larger sample sizes? Yes, per email from Mike Dumelle on November 5th:  "The way stratified variance estimators work is that they sum the variances in each strata, so each strata could apply either the SRS or LNBH variance estimator, and the sum could be some combination."
+Stepping through estimates by comparing 1) no stratification and vartype SRS, 2, stratification and vartype SRS, 3) no stratification and varype LOCAL, which is the default, and 4) stratification and vartype LOCAL. The fourth estimates gives a warning about SRS variance estimator being used for mst_a and mst_b because their sample sizes are less than 4. Does this imply though that the local variance estimator was used for mck and otr, with their larger sample sizes? Yes, per email from Mike Dumelle on November 5th: "The way stratified variance estimators work is that they sum the variances in each strata, so each strata could apply either the SRS or LNBH variance estimator, and the sum could be some combination."
 
 Use of field coordinate locations, as opposed to designed coordinate locations, did not produce any differences in standard errors based on lnbh (local neighborhood) variance estimator.
 
@@ -318,9 +319,7 @@ The table below compares the standard error of the pH estimate, 5.3, for all 16 
 
 ## Map and Histogram
 
-Some code came from script 06 of \Mike\R\_code\nmc-2025-model-ssn2 and updating based on <https://tmap.geocompx.org/charts> to add histogram to map.
-Commented out tmap_save once I saved the maps to the tmap folder.
-### pH
+Some code came from script 06 of \Mike\R\_code\nmc-2025-model-ssn2 and updating based on <https://tmap.geocompx.org/charts> to add histogram to map. Commented out tmap_save once I saved the maps to the tmap folder. \### pH
 
 ```{r pH_map_histogram}
 
@@ -448,6 +447,6 @@ sub_strm_ests$Pct
 
 | Stream Subpopulation | Average Conductivity | 95% LCb | 95% UCB |   n |
 |:--------------------:|---------------------:|--------:|--------:|----:|
-|         mck          |        30.5          |     23.0|   37.9 :|   4 |
-|         mst          |        18.6          |     18.2|   19.0 :|   4 |
-|         otr          |        21.2          |     20.5|   22.0 :|   4 |
+|         mck          |                 30.5 |    23.0 |  37.9 : |   4 |
+|         mst          |                 18.6 |    18.2 |  19.0 : |   4 |
+|         otr          |                 21.2 |    20.5 |  22.0 : |   4 |
