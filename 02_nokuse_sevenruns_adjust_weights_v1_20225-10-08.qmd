@@ -1,5 +1,6 @@
 ---
 title: "02_nokuse_sevenruns_adjust_weights"
+author: "Mike McManus and Charli Morgan, Nokuse Land Conservancy"
 format: html
 editor: visual
 editor_options: 
@@ -94,7 +95,7 @@ str(sites_stratv5)
 
 ## Adjust Weights
 
-Need to adjust weights because had 1) to use overdraw sites, 2) some sites that were inaccessible, 3) some sites that were not part of the target population, and 4)some sites were not needed. In other words, the sample size of the implemented survey differed from the designed survey.
+Need to adjust weights because had 1) to use overdraw sites, 2) some sites that were inaccessible, 3) some sites that were not part of the target population, and 4) some sites were not needed. In other words, the sample size of the implemented survey differed from the designed survey.
 
 Get warnings on category estimates that simple random sample estimator is used when n\< 4.
 
@@ -238,7 +239,7 @@ dim(dt_2)
 
 ## WQ Survey Estimates
 
-Stepping through estimates by comparing 1) no stratification and vartype SRS, 2, stratification and vartype SRS, 3) no stratification and varype LOCAL, which is the default, and 4) stratification and vartype LOCAL. The fourth estimates gives a warning about SRS variance estimator being used for mst_a and mst_b because their sample sizes are less than 4. Does this imply though that the local variance estimator was used for mck and otr, with their larger sample sizes? Yes, per email from Mike Dumelle on November 5th: "The way stratified variance estimators work is that they sum the variances in each strata, so each strata could apply either the SRS or LNBH variance estimator, and the sum could be some combination."
+Stepping through estimates by comparing 1) no stratification and variance type (vartype) SRS, 2, stratification and vartype SRS, 3) no stratification and varype LOCAL, which is the default, and 4) stratification and vartype LOCAL. The fourth estimates gives a warning about SRS variance estimator being used for mst_a and mst_b because their sample sizes are less than 4. Does this imply though that the local variance estimator was used for mck and otr, with their larger sample sizes? Yes, per email from Mike Dumelle on November 5th: "The way stratified variance estimators work is that they sum the variances in each strata, so each strata could apply either the SRS or LNBH variance estimator, and the sum could be some combination."
 
 Use of field coordinate locations, as opposed to designed coordinate locations, did not produce any differences in standard errors based on lnbh (local neighborhood) variance estimator.
 
@@ -399,7 +400,9 @@ sr_map_cond_plot
 
 ## Subpopulation Estimates
 
-Pool stratum level mst_a and mst_b into subpopulation stream of "mst" so that now gives a mainstem sample size of n = 6. The other subpopulations of mck and otr have subpopulation sample sizes of n = 4 and n = 6, respectively. With those sample sizes, the default variance estimator should be used which is the local neighborhood variance estimator. These estimates were put into Tables 1 and 2. Note these estimates could change if I get new coordinates from Charli. No change when used field coordinates.
+Pool stratum level mst_a and mst_b into subpopulation stream of "mst" so that now gives a mainstem sample size of n = 6. The other subpopulations of mck and otr have subpopulation sample sizes of n = 4 and n = 6, respectively. With those sample sizes, the default variance estimator should be used which is the local neighborhood variance estimator. These estimates were put into Tables 1 and 2. Note these estimates could change if I get new coordinates from Charli. No change occurred when used field coordinates as identifying neighboring sites, which is what lnbh does, did not change.
+
+The comparison of standard error estimates based on variance type = "Local" or variance type = "SRS" showed that the estimates using SRS were always larger suggesting that there is some spatial structure to the data, that is, sites near each other resemble each other.
 
 ```{r, subpop}
 
@@ -413,7 +416,8 @@ dt_3 <- dt_2 %>%
 head(dt_3$sub_strm)
 str(dt_3)
 
-sub_strm_ests <- cont_analysis(
+# using default vartype "Local"
+sub_strm_ests1 <- cont_analysis(
   dt_3,
   siteID = "siteID",
   vars = c("pH", "Cond", "Turbidity", "DO_mg_l", "Temp", "Depth", "Velocity", "Wetted_width", "Bank_width",  "Canopy_pct"),
@@ -421,12 +425,27 @@ sub_strm_ests <- cont_analysis(
   subpop = "sub_strm"
 )
 
-sub_strm_ests$Mean
+sub_strm_ests1$Mean
 
-names(sub_strm_ests)
-sub_strm_ests$Mean
-sub_strm_ests$CDF
-sub_strm_ests$Pct
+names(sub_strm_ests1)
+sub_strm_ests1$Mean
+sub_strm_ests1$CDF
+sub_strm_ests1$Pct
+
+# using vartype "SRS
+sub_strm_ests2 <- cont_analysis(
+  dt_3,
+  siteID = "siteID",
+  vars = c("pH", "Cond", "Turbidity", "DO_mg_l", "Temp", "Depth", "Velocity", "Wetted_width", "Bank_width",  "Canopy_pct"),
+  weight = "adjwgt_nr",
+  subpop = "sub_strm",
+  vartype = "SRS"
+)
+
+sub_strm_ests2$Mean
+
+# returns all TRUE suggesting that there is some spatial structure to the data, that is, sites near each other resemble each other
+sub_strm_ests2$Mean$StdError >= sub_strm_ests1$Mean$StdError
 
 # this omits subpopulations to give all site estimates with local neighborhood variance estimator with values for pH and conductivity reported in the maps above
 # z1sub_strm_ests <- cont_analysis(
@@ -438,6 +457,8 @@ sub_strm_ests$Pct
 # 
 # z1sub_strm_ests$Mean
 ```
+
+The estimate below used the default variance type of local.
 
 | Stream Subpopulation | Average pH | 95% LCb | 95% UCB |   n |
 |:--------------------:|-----------:|--------:|--------:|----:|
