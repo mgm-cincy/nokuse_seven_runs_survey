@@ -400,7 +400,7 @@ sr_map_cond_plot
 
 ## Subpopulation Estimates
 
-Pool stratum level mst_a and mst_b into subpopulation stream of "mst" so that now gives a mainstem sample size of n = 6. The other subpopulations of mck and otr have subpopulation sample sizes of n = 4 and n = 6, respectively. With those sample sizes, the default variance estimator should be used which is the local neighborhood variance estimator. These estimates were put into Tables 1 and 2. Note these estimates could change if I get new coordinates from Charli. No change occurred when used field coordinates as identifying neighboring sites, which is what lnbh does, did not change.
+Pooled stratum level mst_a and mst_b into subpopulation stream of "mst" so that now gives a mainstem sample size of n = 6. The other subpopulations of mck and otr have subpopulation sample sizes of n = 4 and n = 6, respectively. With those sample sizes, the default variance estimator should be used which is the local neighborhood variance estimator. These estimates were put into Tables 1 and 2. Note these estimates could change if I get new coordinates from Charli. No change occurred when used field coordinates as identifying neighboring sites, which is what lnbh does, did not change.
 
 The comparison of standard error estimates based on variance type = "Local" or variance type = "SRS" showed that the estimates using SRS were always larger suggesting that there is some spatial structure to the data, that is, sites near each other resemble each other.
 
@@ -469,5 +469,5 @@ The estimate below used the default variance type of local.
 | Stream Subpopulation | Average Conductivity | 95% LCb | 95% UCB |   n |
 |:--------------------:|---------------------:|--------:|--------:|----:|
 |         mck          |                 30.5 |    23.0 |  37.9 : |   4 |
-|         mst          |                 18.6 |    18.2 |  19.0 : |   4 |
-|         otr          |                 21.2 |    20.5 |  22.0 : |   4 |
+|         mst          |                 18.6 |    18.2 |  19.0 : |   6 |
+|         otr          |                 21.2 |    20.5 |  22.0 : |   6 |
