@@ -90,7 +90,7 @@ mapview(huc12sr)
 # mapview(flowline_nldi) + mapview(huc12sr) + mapview(nkbnd)
 ```
 
-## Flowlines and Upstream Tributraries Trace
+## Flowlines and Upstream Tributaries Trace
 
 Try using huc12sr as area of interest (aoi) polygon to get flowlines and catchments using ndhplusTools following code nhdplus_streamcat.Rmd and chunk nhdplus. This brings in comid for each flowline segment or reach. Also, able to get catchments.
 
@@ -249,7 +249,7 @@ mapview(sr_sf, zcol = "stream_type") + mapview(nkbnd)
 
 ## Sample Frame and Basin
 
-Save Survey Sample Frame If no more changes are needed we can save the sample frame as simply load it with the readRDS function so we do not have to keep running the code above.
+Save Survey Sample Frame if no more changes are needed we can save the sample frame as simply load it with the readRDS function so we do not have to keep running the code above.
 
 ```{r save_sampleframe}
 # if no more changes are needed we can save the seven runs sample frame
